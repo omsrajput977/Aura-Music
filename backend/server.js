@@ -74,52 +74,308 @@ function unescapeHtml(text) {
     .replace(/&gt;/g, '>');
 }
 
+// Extracts comprehensive, accurate artist and singer names from JioSaavn payload
+function extractArtists(track) {
+  if (!track) return 'Artist';
+
+  // 1. Primary artists from artistMap
+  const primary = track.more_info?.artistMap?.primary_artists
+    ?.map(a => unescapeHtml(a.name || '').trim())
+    .filter(Boolean) || [];
+
+  // 2. Singers from artistMap
+  const singers = track.more_info?.artistMap?.artists
+    ?.filter(a => a.role === 'singer' || a.role === 'primary_artists')
+    ?.map(a => unescapeHtml(a.name || '').trim())
+    .filter(Boolean) || [];
+
+  // 3. Featured artists from artistMap
+  const featured = track.more_info?.artistMap?.featured_artists
+    ?.map(a => unescapeHtml(a.name || '').trim())
+    .filter(Boolean) || [];
+
+  // Uniquely combine
+  const allSingers = Array.from(new Set([...primary, ...singers, ...featured]));
+  if (allSingers.length > 0) {
+    return allSingers.join(', ');
+  }
+
+  // 4. Fall back to singers string
+  if (track.more_info?.singers) {
+    return unescapeHtml(track.more_info.singers);
+  }
+
+  // 5. Fall back to music composer string
+  if (track.more_info?.music) {
+    return unescapeHtml(track.more_info.music);
+  }
+
+  // 6. Fall back to subtitle
+  if (track.subtitle) {
+    return unescapeHtml(track.subtitle);
+  }
+
+  return 'Artist';
+}
+
+function parseSaavnTrack(track) {
+  if (!track || !track.title) return null;
+  const streamUrl = decryptSaavnMediaUrl(track.more_info?.encrypted_media_url);
+  if (!streamUrl) return null;
+
+  const highResArt = track.image
+    ? track.image.replace('150x150.jpg', '500x500.jpg').replace('50x50.jpg', '500x500.jpg')
+    : 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=600&q=80';
+
+  const durationSec = Number(track.more_info?.duration || track.duration || 180);
+
+  return {
+    id: `saavn-${track.id}`,
+    name: unescapeHtml(track.title),
+    artists: extractArtists(track),
+    albumName: unescapeHtml(track.more_info?.album || 'Single'),
+    albumArt: highResArt,
+    audioUrl: streamUrl,
+    duration: durationSec * 1000,
+    genre: track.language || 'Music',
+    source: 'full_stream'
+  };
+}
+
+function calculateRelevance(track, query) {
+  const q = query.toLowerCase().trim();
+  const qClean = q.replace(/[^a-z0-9\s]/g, '');
+  const qTokens = qClean.split(/\s+/).filter(Boolean);
+  const qNoSpace = qClean.replace(/\s+/g, '');
+
+  const title = (track.name || '').toLowerCase();
+  const titleClean = title.replace(/[^a-z0-9\s]/g, '');
+  const titleNoSpace = titleClean.replace(/\s+/g, '');
+  const artists = (track.artists || '').toLowerCase();
+  const artistsClean = artists.replace(/[^a-z0-9\s]/g, '');
+  const artistsNoSpace = artistsClean.replace(/\s+/g, '');
+  const album = (track.albumName || '').toLowerCase();
+
+  let score = 0;
+
+  // 1. Exact title match (with or without spaces)
+  if (titleClean === qClean || titleNoSpace === qNoSpace) {
+    score += 350;
+  } else if (titleClean.startsWith(qClean) || titleNoSpace.startsWith(qNoSpace)) {
+    score += 220;
+  } else if (titleClean.includes(qClean) || titleNoSpace.includes(qNoSpace)) {
+    score += 160;
+  }
+
+  // 2. All search tokens found in title
+  let allTokensInTitle = qTokens.length > 0;
+  for (const token of qTokens) {
+    if (titleClean.includes(token)) {
+      score += 30;
+    } else {
+      allTokensInTitle = false;
+    }
+  }
+  if (allTokensInTitle && qTokens.length > 1) {
+    score += 120;
+  }
+
+  // 3. Artist match
+  if (artistsClean === qClean || artistsNoSpace === qNoSpace || artists.includes(q)) {
+    score += 240;
+  } else {
+    for (const token of qTokens) {
+      if (token.length > 2 && (artists.includes(token) || artistsClean.includes(token))) {
+        score += 50;
+      }
+    }
+  }
+
+  // 4. Album match
+  if (album.includes(qClean)) {
+    score += 40;
+  }
+
+  // Penalty for compilation albums if the track title does not contain the query words
+  const isCompilation = /vibes|party|summer|spring|beach|frühstück|cortisol|skiing|gym|driving/i.test(album);
+  if (isCompilation && qTokens.length > 0 && !titleClean.includes(qTokens[0])) {
+    score -= 50;
+  }
+
+  return score;
+}
+
+function deduplicateTracks(tracks, limit = 18) {
+  const seen = new Set();
+  const results = [];
+
+  for (const track of tracks) {
+    const baseTitle = (track.name || '')
+      .toLowerCase()
+      .replace(/\(.*?\)/g, '')
+      .replace(/\[.*?\]/g, '')
+      .replace(/[^a-z0-9]/g, '')
+      .trim();
+
+    const baseArtist = (track.artists || '')
+      .toLowerCase()
+      .replace(/[^a-z0-9]/g, '')
+      .slice(0, 12);
+
+    const key = `${baseTitle}__${baseArtist}`;
+
+    if (!seen.has(key)) {
+      seen.add(key);
+      results.push(track);
+    }
+
+    if (results.length >= limit) break;
+  }
+
+  return results;
+}
+
+// Load Rich Categorized Music Catalog (80+ unique, non-overlapping songs)
+let musicCatalog = {};
+try {
+  musicCatalog = require('./data/musicCatalog.json');
+} catch (e) {
+  console.warn('[Music Catalog]: Warning - musicCatalog.json not found, using fallbacks');
+}
+
+// Flatten catalog tracks for high-speed local search matches
+const allCatalogTracks = [];
+const catalogSeen = new Set();
+for (const key of Object.keys(musicCatalog)) {
+  const list = musicCatalog[key];
+  if (Array.isArray(list)) {
+    for (const t of list) {
+      if (t && t.id && !catalogSeen.has(t.id)) {
+        catalogSeen.add(t.id);
+        allCatalogTracks.push(t);
+      }
+    }
+  }
+}
+
+function searchLocalCatalog(query) {
+  if (!allCatalogTracks.length || !query) return [];
+  const q = query.toLowerCase().trim();
+  const qTokens = q.replace(/[^a-z0-9\s]/g, '').split(/\s+/).filter(Boolean);
+
+  return allCatalogTracks.filter(t => {
+    const name = (t.name || '').toLowerCase();
+    const artists = (t.artists || '').toLowerCase();
+    const album = (t.albumName || '').toLowerCase();
+    const genre = (t.genre || '').toLowerCase();
+
+    if (name.includes(q) || artists.includes(q) || album.includes(q) || genre.includes(q)) {
+      return true;
+    }
+    return qTokens.length > 0 && qTokens.every(tok => name.includes(tok) || artists.includes(tok));
+  });
+}
+
 /**
  * Endpoint: /api/music/search
  * Searches full-length songs (Indian & Global) with 320kbps audio streams.
+ * Multi-query Lucene token strategy + Artist discography + Deduplication.
  */
 app.get('/api/music/search', async (req, res) => {
   const query = req.query.q;
-  const limit = Math.min(30, Number(req.query.limit) || 16);
+  const limit = Math.min(40, Number(req.query.limit) || 18);
 
   if (!query || !query.trim()) {
     return res.json([]);
   }
 
+  const cleanQuery = query.trim();
+  const tokens = cleanQuery.split(/\s+/).filter(Boolean);
+
   try {
-    const searchUrl = `https://www.jiosaavn.com/api.php?__call=search.getResults&q=${encodeURIComponent(query)}&_format=json&_marker=0&api_version=4&n=${limit}&p=1`;
-    const response = await axios.get(searchUrl);
-    const results = response.data?.results || [];
+    const searchUrls = [];
 
-    const tracks = results
-      .map(track => {
-        const streamUrl = decryptSaavnMediaUrl(track.more_info?.encrypted_media_url);
-        if (!streamUrl) return null;
+    // Variation A: Plus-joined tokens (forces Lucene AND condition, critical for multi-word titles like "we are empire")
+    if (tokens.length > 1) {
+      searchUrls.push(`https://www.jiosaavn.com/api.php?__call=search.getResults&q=${encodeURIComponent(tokens.join('+'))}&_format=json&_marker=0&api_version=4&n=25&p=1`);
+    }
 
-        const highResArt = track.image
-          ? track.image.replace('150x150.jpg', '500x500.jpg').replace('50x50.jpg', '500x500.jpg')
-          : 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=600&q=80';
+    // Variation B: Standard query
+    searchUrls.push(`https://www.jiosaavn.com/api.php?__call=search.getResults&q=${encodeURIComponent(cleanQuery)}&_format=json&_marker=0&api_version=4&n=25&p=1`);
 
-        const durationSec = Number(track.more_info?.duration || track.duration || 180);
+    // Variation C: Compacted without spaces (e.g. "weareempire")
+    if (tokens.length > 1) {
+      searchUrls.push(`https://www.jiosaavn.com/api.php?__call=search.getResults&q=${encodeURIComponent(tokens.join(''))}&_format=json&_marker=0&api_version=4&n=15&p=1`);
+    }
 
-        return {
-          id: `saavn-${track.id}`,
-          name: unescapeHtml(track.title),
-          artists: unescapeHtml(track.more_info?.singers || track.more_info?.music || track.subtitle || 'Artist'),
-          albumName: unescapeHtml(track.more_info?.album || 'Single'),
-          albumArt: highResArt,
-          audioUrl: streamUrl,
-          duration: durationSec * 1000,
-          genre: track.language || 'Music',
-          source: 'full_stream'
-        };
-      })
-      .filter(Boolean);
+    // Variation D: Artist search to fetch verified discography when query is a singer/artist
+    searchUrls.push(`https://www.jiosaavn.com/api.php?__call=search.getArtistResults&q=${encodeURIComponent(cleanQuery)}&_format=json&_marker=0&api_version=4&n=2&p=1`);
 
-    res.json(tracks);
+    const responses = await Promise.allSettled(
+      searchUrls.map(u => axios.get(u, { timeout: 4500 }))
+    );
+
+    const candidates = [];
+    const artistDetailsPromises = [];
+
+    for (let i = 0; i < responses.length; i++) {
+      const resp = responses[i];
+      if (resp.status !== 'fulfilled' || !resp.value.data) continue;
+      const data = resp.value.data;
+
+      // Last item was artist search
+      if (i === searchUrls.length - 1) {
+        const topArtist = data.results?.[0];
+        if (topArtist?.id) {
+          artistDetailsPromises.push(
+            axios.get(`https://www.jiosaavn.com/api.php?__call=artist.getArtistPageDetails&artistId=${topArtist.id}&_format=json&_marker=0&api_version=4&n_song=10`, { timeout: 3500 })
+              .then(r => r.data?.topSongs?.songs || [])
+              .catch(() => [])
+          );
+        }
+      } else if (Array.isArray(data.results)) {
+        for (const rawTrack of data.results) {
+          const parsed = parseSaavnTrack(rawTrack);
+          if (parsed) candidates.push(parsed);
+        }
+      }
+    }
+
+    // Await any artist discography results
+    if (artistDetailsPromises.length > 0) {
+      const artistResults = await Promise.allSettled(artistDetailsPromises);
+      for (const ar of artistResults) {
+        if (ar.status === 'fulfilled' && Array.isArray(ar.value)) {
+          for (const rawTrack of ar.value) {
+            const parsed = parseSaavnTrack(rawTrack);
+            if (parsed) candidates.push(parsed);
+          }
+        }
+      }
+    }
+
+    // Also match from our curated catalog (80+ unique 320kbps CD tracks)
+    const localMatches = searchLocalCatalog(cleanQuery);
+    for (const lt of localMatches) {
+      candidates.push({ ...lt, source: 'curated_catalog' });
+    }
+
+    // Calculate relevance scores
+    for (const t of candidates) {
+      t.score = calculateRelevance(t, cleanQuery);
+    }
+
+    // Sort by score descending
+    candidates.sort((a, b) => b.score - a.score);
+
+    // Deduplicate to eliminate playlist repetitions
+    const finalTracks = deduplicateTracks(candidates, limit);
+
+    res.json(finalTracks);
   } catch (err) {
     console.error('[Music Search API Error]:', err.message);
-    res.status(500).json({ error: 'Search failed', message: err.message });
+    const fallback = searchLocalCatalog(cleanQuery);
+    res.json(fallback.slice(0, limit));
   }
 });
 
@@ -134,26 +390,7 @@ app.get('/api/music/trending', async (req, res) => {
     const results = response.data?.results || [];
 
     const tracks = results
-      .map(track => {
-        const streamUrl = decryptSaavnMediaUrl(track.more_info?.encrypted_media_url);
-        if (!streamUrl) return null;
-
-        const highResArt = track.image
-          ? track.image.replace('150x150.jpg', '500x500.jpg')
-          : 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=600&q=80';
-
-        return {
-          id: `saavn-${track.id}`,
-          name: unescapeHtml(track.title),
-          artists: unescapeHtml(track.more_info?.singers || track.more_info?.music || track.subtitle || 'Artist'),
-          albumName: unescapeHtml(track.more_info?.album || 'Single'),
-          albumArt: highResArt,
-          audioUrl: streamUrl,
-          duration: Number(track.more_info?.duration || 180) * 1000,
-          genre: track.language || 'Music',
-          source: 'full_stream'
-        };
-      })
+      .map(track => parseSaavnTrack(track))
       .filter(Boolean);
 
     res.json(tracks);
@@ -161,14 +398,6 @@ app.get('/api/music/trending', async (req, res) => {
     res.status(500).json({ error: 'Trending failed', message: err.message });
   }
 });
-
-// Load Rich Categorized Music Catalog (80+ unique, non-overlapping songs)
-let musicCatalog = {};
-try {
-  musicCatalog = require('./data/musicCatalog.json');
-} catch (e) {
-  console.warn('[Music Catalog]: Warning - musicCatalog.json not found, using fallbacks');
-}
 
 /**
  * Endpoint: /api/music/shelves

@@ -229,11 +229,45 @@ export const searchOnlineMusic = async (query, country = 'IN', limit = 16) => {
     console.warn('[Secondary Search notice]:', err2.message);
   }
 
-  // 3. Match from Curated Tracks
-  const qLower = query.toLowerCase();
-  const matched = CURATED_ONLINE_TRACKS.filter(
-    t => t.name.toLowerCase().includes(qLower) || t.artists.toLowerCase().includes(qLower)
-  );
+  // 3. Match from Curated Tracks and Cached Shelves
+  const qLower = query.toLowerCase().trim();
+  const qTokens = qLower.replace(/[^a-z0-9\s]/g, '').split(/\s+/).filter(Boolean);
+
+  const localPool = [...CURATED_ONLINE_TRACKS];
+  if (cachedShelvesData) {
+    Object.values(cachedShelvesData).forEach(shelfGroup => {
+      if (Array.isArray(shelfGroup)) {
+        shelfGroup.forEach(item => {
+          if (Array.isArray(item.tracks)) {
+            localPool.push(...item.tracks);
+          }
+        });
+      }
+    });
+  }
+
+  const seen = new Set();
+  const matched = [];
+
+  for (const t of localPool) {
+    if (!t || !t.name || seen.has(t.id || t.name)) continue;
+    const name = t.name.toLowerCase();
+    const artists = (t.artists || '').toLowerCase();
+    const album = (t.albumName || '').toLowerCase();
+    const genre = (t.genre || '').toLowerCase();
+
+    const isMatch =
+      name.includes(qLower) ||
+      artists.includes(qLower) ||
+      album.includes(qLower) ||
+      genre.includes(qLower) ||
+      (qTokens.length > 0 && qTokens.every(tok => name.includes(tok) || artists.includes(tok)));
+
+    if (isMatch) {
+      seen.add(t.id || t.name);
+      matched.push(t);
+    }
+  }
 
   return matched;
 };
