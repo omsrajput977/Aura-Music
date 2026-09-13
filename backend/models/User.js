@@ -25,6 +25,19 @@ const UserSchema = new mongoose.Schema({
     minlength: 6,
     select: true
   },
+  likedSongs: [
+    {
+      id: { type: String, required: true },
+      name: { type: String, required: true },
+      artists: { type: String, default: 'Artist' },
+      albumName: { type: String, default: '' },
+      albumArt: { type: String, default: '' },
+      audioUrl: { type: String, default: '' },
+      duration: { type: Number, default: 210000 },
+      genre: { type: String, default: 'Music' },
+      likedAt: { type: Date, default: Date.now }
+    }
+  ],
   createdAt: {
     type: Date,
     default: Date.now

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Search, X, Disc, Play, Loader2, Music, History, Trash2, Plus } from 'lucide-react';
+import { Search, X, Disc, Play, Loader2, Music, History, Trash2, Plus, Heart, ListPlus } from 'lucide-react';
 import { searchOnlineMusic, getRecentSearchHistory, clearSearchHistory } from '../../utils/onlineMusicApi';
+import { usePlayer } from '../../context/PlayerContext';
 
 /**
  * High-Speed Search Modal with 6 Recently Played History Songs.
@@ -13,6 +14,7 @@ export const SearchModal = ({
   onSelectTrack,
   onAddToPlaylist
 }) => {
+  const { addToUserQueue, toggleLike, isLiked } = usePlayer();
   const [query, setQuery] = useState('');
   const [results, setResults] = useState(() => getRecentSearchHistory());
   const [isSearching, setIsSearching] = useState(false);
@@ -195,10 +197,38 @@ export const SearchModal = ({
                   </div>
                 </div>
 
-                <div className="flex items-center space-x-1 xs:space-x-2 sm:space-x-3 flex-shrink-0 pl-1.5 xs:pl-2 sm:pl-3">
+                <div className="flex items-center space-x-1 xs:space-x-1.5 sm:space-x-2 flex-shrink-0 pl-1.5 xs:pl-2 sm:pl-3">
                   <span className="text-[10px] xs:text-xs font-mono text-slate-400">
                     {formatDuration(track.duration)}
                   </span>
+
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleLike(track);
+                    }}
+                    className={`p-1 xs:p-1.5 rounded-full transition-colors ${
+                      isLiked(track.id || track.name)
+                        ? 'text-spotifyGreen'
+                        : 'text-slate-400 hover:text-white'
+                    }`}
+                    title={isLiked(track.id || track.name) ? 'Remove from Liked' : 'Save to Liked'}
+                  >
+                    <Heart className={`w-3.5 h-3.5 ${isLiked(track.id || track.name) ? 'fill-current text-spotifyGreen' : ''}`} />
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      addToUserQueue(track);
+                    }}
+                    className="p-1 xs:p-1.5 rounded-full bg-white/5 hover:bg-spotifyGreen/20 text-slate-400 hover:text-spotifyGreen border border-white/10 hover:border-spotifyGreen/40 transition-colors"
+                    title="Add to Next in Queue"
+                  >
+                    <ListPlus className="w-3.5 h-3.5" />
+                  </button>
 
                   {onAddToPlaylist && (
                     <button
@@ -216,7 +246,7 @@ export const SearchModal = ({
 
                   <span className="inline-flex items-center space-x-1 xs:space-x-1.5 px-2 xs:px-3 py-0.5 xs:py-1 rounded-full bg-white/5 border border-white/10 text-[10px] xs:text-[11px] font-mono text-slate-300 group-hover:bg-neonCyan/20 group-hover:text-neonCyan group-hover:border-neonCyan/40 transition-colors">
                     <Disc className="w-3 xs:w-3.5 h-3 xs:h-3.5 animate-spin-slow" />
-                    <span className="hidden xs:inline">SPIN</span>
+                    <span className="hidden xs:inline">PLAY</span>
                   </span>
                 </div>
               </div>

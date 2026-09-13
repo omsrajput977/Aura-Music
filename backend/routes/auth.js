@@ -201,7 +201,13 @@ router.get('/me', async (req, res) => {
     }
 
     if (mongoose.connection.readyState === 1) {
-      const user = await User.findById(decoded.id).select('-password');
+      let user = null;
+      if (mongoose.Types.ObjectId.isValid(decoded.id)) {
+        user = await User.findById(decoded.id).select('-password');
+      } else if (decoded.email) {
+        user = await User.findOne({ email: decoded.email }).select('-password');
+      }
+
       if (!user) {
         res.clearCookie('aura_jwt');
         return res.status(401).json({ status: 'unauthorized', user: null });

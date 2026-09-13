@@ -1,6 +1,14 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
 import { useAuth } from './AuthContext';
-import { searchOnlineMusic, CURATED_ONLINE_TRACKS, saveToSearchHistory, isPreviewOrCutoffUrl, sanitizeTrack } from '../utils/onlineMusicApi';
+import { 
+  searchOnlineMusic, 
+  CURATED_ONLINE_TRACKS, 
+  saveToSearchHistory, 
+  isPreviewOrCutoffUrl, 
+  sanitizeTrack,
+  fetchLikedSongsApi,
+  toggleLikeApi
+} from '../utils/onlineMusicApi';
 
 const PlayerContext = createContext(null);
 
@@ -10,6 +18,10 @@ const STORAGE_KEYS = {
   PROGRESS_MS: 'aura_progress_ms',
   ACTIVE_QUEUE: 'aura_active_queue',
   ACTIVE_QUEUE_INDEX: 'aura_active_queue_index',
+  USER_QUEUE: 'aura_user_queue',
+  LIKED_SONGS: 'aura_liked_songs',
+  VIEW_MODE: 'aura_view_mode',
+  CONTEXT_NAME: 'aura_context_name',
   VOLUME: 'aura_volume',
   RPM: 'aura_rpm',
   SHUFFLE: 'aura_shuffle',
@@ -122,10 +134,69 @@ export const PlayerProvider = ({ children }) => {
     return 'all'; // 'off' | 'all' | 'one'
   });
 
+  // Spotify User Queue (explicitly queued tracks that play NEXT before context queue)
+  const [userQueue, setUserQueue] = useState(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEYS.USER_QUEUE);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) return parsed.map(sanitizeTrack);
+      }
+    } catch (e) {}
+    return [];
+  });
+
+  // User's Liked Songs collection
+  const [likedSongs, setLikedSongs] = useState(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEYS.LIKED_SONGS);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed.map(sanitizeTrack);
+      }
+    } catch (e) {}
+    return [CURATED_ONLINE_TRACKS[0], CURATED_ONLINE_TRACKS[2]];
+  });
+
+  // View Mode: 'browse' (Spotify grid & shelves) vs 'turntable' (3D Vinyl Deck)
+  const [viewMode, setViewMode] = useState(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEYS.VIEW_MODE);
+      if (saved === 'browse' || saved === 'turntable') return saved;
+    } catch (e) {}
+    return 'browse';
+  });
+
+  // Spotify Right Sidebar (Now Playing / About Artist)
+  const [isRightPanelOpen, setIsRightPanelOpen] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth >= 1280;
+    }
+    return true;
+  });
+
+  // Playing Context Name (e.g. "Trending Bollywood", "Recommended Stations", "Liked Songs")
+  const [contextName, setContextName] = useState(() => {
+    try {
+      return localStorage.getItem(STORAGE_KEYS.CONTEXT_NAME) || 'AURA Curated Stream';
+    } catch (e) {}
+    return 'AURA Curated Stream';
+  });
+
+  // Toast notification for user actions (e.g. Added to queue, Saved to Liked Songs)
+  const [toastMessage, setToastMessage] = useState(null);
+  const showToast = (msg) => {
+    setToastMessage(msg);
+    setTimeout(() => {
+      setToastMessage((prev) => (prev === msg ? null : prev));
+    }, 2600);
+  };
+
   // Stable refs for audio listeners & event callbacks to avoid stale closures
   const demoAudioRef = useRef(new Audio());
   const activeQueueRef = useRef(activeQueue);
   const activeQueueIndexRef = useRef(activeQueueIndex);
+  const userQueueRef = useRef(userQueue);
   const isShuffleRef = useRef(isShuffle);
   const repeatModeRef = useRef(repeatMode);
   const currentTrackRef = useRef(currentTrack);
@@ -135,6 +206,7 @@ export const PlayerProvider = ({ children }) => {
 
   useEffect(() => { activeQueueRef.current = activeQueue; }, [activeQueue]);
   useEffect(() => { activeQueueIndexRef.current = activeQueueIndex; }, [activeQueueIndex]);
+  useEffect(() => { userQueueRef.current = userQueue; }, [userQueue]);
   useEffect(() => { isShuffleRef.current = isShuffle; }, [isShuffle]);
   useEffect(() => { repeatModeRef.current = repeatMode; }, [repeatMode]);
   useEffect(() => { currentTrackRef.current = currentTrack; }, [currentTrack]);
@@ -186,6 +258,43 @@ export const PlayerProvider = ({ children }) => {
       localStorage.setItem(STORAGE_KEYS.REPEAT_MODE, repeatMode);
     } catch (e) {}
   }, [repeatMode]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEYS.USER_QUEUE, JSON.stringify(userQueue));
+    } catch (e) {}
+  }, [userQueue]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEYS.LIKED_SONGS, JSON.stringify(likedSongs));
+    } catch (e) {}
+  }, [likedSongs]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEYS.VIEW_MODE, viewMode);
+    } catch (e) {}
+  }, [viewMode]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEYS.CONTEXT_NAME, contextName);
+    } catch (e) {}
+  }, [contextName]);
+
+  // Sync liked songs with server on mount
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      const serverLiked = await fetchLikedSongsApi();
+      if (mounted && serverLiked && Array.isArray(serverLiked) && serverLiked.length > 0) {
+        setLikedSongs(serverLiked.map(sanitizeTrack));
+      }
+    })();
+    return () => { mounted = false; };
+  }, []);
+
 
   // Save exact playback position on window refresh/unload
   useEffect(() => {
@@ -269,13 +378,16 @@ export const PlayerProvider = ({ children }) => {
   };
 
   // Play specific track with Spotify-style queue adoption
-  const playTrackItem = async (rawTrack, contextUri = null, newQueue = null, targetIndex = null, startFromMs = 0) => {
+  const playTrackItem = async (rawTrack, contextUri = null, newQueue = null, targetIndex = null, startFromMs = 0, contextLabel = null) => {
     if (!rawTrack) return;
     const track = sanitizeTrack(rawTrack);
     setCurrentTrack(track);
     currentTrackRef.current = track;
     setProgressMs(startFromMs);
     if (track.duration) setDurationMs(track.duration);
+    if (contextLabel) {
+      setContextName(contextLabel);
+    }
 
     // Save to recently played / search history
     saveToSearchHistory(track);
@@ -333,11 +445,8 @@ export const PlayerProvider = ({ children }) => {
     }
   };
 
-  // Skip to next track in queue
+  // Skip to next track in queue (prioritizes User Queue, then Context Queue)
   const handleNext = async () => {
-    const queue = activeQueueRef.current;
-    if (!queue || queue.length === 0) return;
-
     if (repeatModeRef.current === 'one') {
       const audio = demoAudioRef.current;
       audio.currentTime = 0;
@@ -347,6 +456,19 @@ export const PlayerProvider = ({ children }) => {
       setIsPlaying(true);
       return;
     }
+
+    // 1. Prioritize User Queue: user-added tracks always play next
+    if (userQueueRef.current && userQueueRef.current.length > 0) {
+      const [nextUserTrack, ...remaining] = userQueueRef.current;
+      setUserQueue(remaining);
+      userQueueRef.current = remaining;
+      playTrackItem(nextUserTrack, null, null, null, 0);
+      return;
+    }
+
+    // 2. Play next in Context Queue
+    const queue = activeQueueRef.current;
+    if (!queue || queue.length === 0) return;
 
     const curIdx = activeQueueIndexRef.current;
     if (repeatModeRef.current === 'off' && curIdx >= queue.length - 1) {
@@ -415,13 +537,40 @@ export const PlayerProvider = ({ children }) => {
     playTrackItem(queue[index], null, queue, index, 0);
   };
 
-  // Add track to queue
-  const addToQueue = (track) => {
-    if (!track) return;
-    setActiveQueue(prev => [...prev, track]);
+  // Add track to User Queue (Plays next in Spotify style)
+  const addToUserQueue = (rawTrack) => {
+    if (!rawTrack) return;
+    const clean = sanitizeTrack(rawTrack);
+    setUserQueue(prev => [...prev, clean]);
+    showToast(`Added "${clean.name}" to queue`);
   };
 
-  // Remove track from queue
+  // Play next immediately (insert at front of user queue)
+  const playNextInUserQueue = (rawTrack) => {
+    if (!rawTrack) return;
+    const clean = sanitizeTrack(rawTrack);
+    setUserQueue(prev => [clean, ...prev]);
+    showToast(`Playing "${clean.name}" next`);
+  };
+
+  // Remove track from User Queue
+  const removeFromUserQueue = (index) => {
+    setUserQueue(prev => prev.filter((_, i) => i !== index));
+  };
+
+  // Clear User Queue
+  const clearUserQueue = () => {
+    setUserQueue([]);
+    showToast('Queue cleared');
+  };
+
+  // Add track to general queue
+  const addToQueue = (track) => {
+    if (!track) return;
+    addToUserQueue(track);
+  };
+
+  // Remove track from context queue
   const removeFromQueue = (index) => {
     setActiveQueue(prev => {
       if (prev.length <= 1) return prev;
@@ -437,12 +586,49 @@ export const PlayerProvider = ({ children }) => {
     });
   };
 
-  // Clear queue
+  // Clear context queue
   const clearQueue = () => {
     if (currentTrackRef.current) {
       setActiveQueue([currentTrackRef.current]);
       setActiveQueueIndex(0);
     }
+    clearUserQueue();
+  };
+
+  // Liked songs management
+  const toggleLike = async (rawTrack) => {
+    if (!rawTrack) return;
+    const track = sanitizeTrack(rawTrack);
+    const trackId = String(track.id || track.name);
+    const alreadyLiked = likedSongs.some(
+      t => String(t.id) === trackId || (t.name === track.name && t.artists === track.artists)
+    );
+
+    if (alreadyLiked) {
+      setLikedSongs(prev => prev.filter(t => String(t.id) !== trackId && !(t.name === track.name && t.artists === track.artists)));
+      showToast(`Removed "${track.name}" from Liked Songs`);
+    } else {
+      setLikedSongs(prev => [track, ...prev]);
+      showToast(`Added "${track.name}" to Liked Songs`);
+    }
+
+    toggleLikeApi(track).catch(() => {});
+  };
+
+  const isLiked = (identifier) => {
+    if (!identifier) return false;
+    const key = String(identifier);
+    return likedSongs.some(
+      t => String(t.id) === key || t.name.toLowerCase() === key.toLowerCase()
+    );
+  };
+
+  const toggleViewMode = () => {
+    setViewMode(prev => prev === 'browse' ? 'turntable' : 'browse');
+  };
+
+  const toggleRightPanel = () => {
+    setIsRightPanelOpen(prev => !prev);
   };
 
   // Unified audio timeupdate & progression listener
@@ -582,6 +768,12 @@ export const PlayerProvider = ({ children }) => {
         topTracks,
         activeQueue,
         activeQueueIndex,
+        userQueue,
+        likedSongs,
+        viewMode,
+        isRightPanelOpen,
+        contextName,
+        toastMessage,
         isShuffle,
         repeatMode,
         setRpm,
@@ -591,8 +783,18 @@ export const PlayerProvider = ({ children }) => {
         handlePrevious,
         jumpToQueueIndex,
         addToQueue,
+        addToUserQueue,
+        playNextInUserQueue,
+        removeFromUserQueue,
+        clearUserQueue,
         removeFromQueue,
         clearQueue,
+        toggleLike,
+        isLiked,
+        toggleViewMode,
+        setViewMode,
+        toggleRightPanel,
+        setContextName,
         seekTo,
         changeVolume,
         toggleShuffle,

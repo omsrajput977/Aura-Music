@@ -237,3 +237,55 @@ export const searchOnlineMusic = async (query, country = 'IN', limit = 16) => {
 
   return matched;
 };
+
+/**
+ * Fetches Spotify-style categorized shelves from backend.
+ */
+export const fetchShelves = async () => {
+  try {
+    const res = await fetch('/api/music/shelves');
+    if (res.ok) {
+      const data = await res.json();
+      if (data && data.quickAccess) return data;
+    }
+  } catch (err) {
+    console.warn('Shelves fetch notice:', err.message);
+  }
+  return null;
+};
+
+/**
+ * Fetches user's liked songs from backend with localStorage fallback.
+ */
+export const fetchLikedSongsApi = async () => {
+  try {
+    const res = await fetch('/api/user/liked');
+    if (res.ok) {
+      const data = await res.json();
+      if (data && Array.isArray(data.likedSongs)) return data.likedSongs;
+    }
+  } catch (err) {
+    console.warn('Liked songs fetch notice:', err.message);
+  }
+  return null;
+};
+
+/**
+ * Toggles a track's like state on backend.
+ */
+export const toggleLikeApi = async (track) => {
+  try {
+    const res = await fetch('/api/user/like', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ track })
+    });
+    if (res.ok) {
+      return await res.json();
+    }
+  } catch (err) {
+    console.warn('Toggle like notice:', err.message);
+  }
+  return null;
+};
+
