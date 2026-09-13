@@ -27,7 +27,6 @@ export const SpotifyBrowseView = ({ onOpenPlaylist, onOpenLikedSongs }) => {
     contextName
   } = usePlayer();
 
-  const [activeFilter, setActiveFilter] = useState('all'); // 'all' | 'music' | 'podcasts'
   const [shelvesData, setShelvesData] = useState(null);
   const [expandedCategory, setExpandedCategory] = useState(null);
 
@@ -65,7 +64,6 @@ export const SpotifyBrowseView = ({ onOpenPlaylist, onOpenLikedSongs }) => {
   const madeForUserList = shelvesData?.madeForUser || [];
   const jumpBackInList = shelvesData?.jumpBackIn || [];
   const recommendedStations = shelvesData?.recommendedStations || [];
-  const episodesYouMightLike = shelvesData?.episodesYouMightLike || [];
   const moreOfWhatYouLike = shelvesData?.moreOfWhatYouLike || [];
 
   // Expanded "Show all" view for a category
@@ -81,9 +79,6 @@ export const SpotifyBrowseView = ({ onOpenPlaylist, onOpenLikedSongs }) => {
     } else if (expandedCategory === 'stations') {
       title = 'Recommended Stations';
       items = recommendedStations;
-    } else if (expandedCategory === 'episodes') {
-      title = 'Episodes you might like';
-      items = episodesYouMightLike;
     } else if (expandedCategory === 'moreOfWhatYouLike') {
       title = 'More of what you like';
       items = moreOfWhatYouLike;
@@ -148,25 +143,11 @@ export const SpotifyBrowseView = ({ onOpenPlaylist, onOpenLikedSongs }) => {
 
   return (
     <div className="w-full flex-1 flex flex-col pb-44 px-3 xs:px-4 sm:px-6 md:px-8 max-w-7xl mx-auto z-10 transition-all">
-      {/* Dynamic Filter Chips */}
-      <div className="flex items-center space-x-2.5 pt-20 sm:pt-24 pb-4 select-none">
-        {['all', 'music', 'podcasts'].map((filter) => (
-          <button
-            key={filter}
-            onClick={() => setActiveFilter(filter)}
-            className={`px-3.5 py-1.5 rounded-full text-xs font-semibold capitalize transition-all cursor-pointer ${
-              activeFilter === filter
-                ? 'bg-white text-slate-950 shadow-md font-bold'
-                : 'bg-white/10 text-slate-200 hover:bg-white/20 border border-white/5'
-            }`}
-          >
-            {filter === 'all' ? 'All' : filter === 'music' ? 'Music' : 'Podcasts'}
-          </button>
-        ))}
-      </div>
+      {/* Top Header Spacing */}
+      <div className="pt-20 sm:pt-24 pb-2" />
 
-      {/* 2x4 Quick Access Grid (Displayed when on 'all' or 'music') */}
-      {activeFilter !== 'podcasts' && quickAccessList.length > 0 && (
+      {/* 2x4 Quick Access Grid */}
+      {quickAccessList.length > 0 && (
         <section className="mb-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-3.5">
             {quickAccessList.map((item) => {
@@ -259,7 +240,7 @@ export const SpotifyBrowseView = ({ onOpenPlaylist, onOpenLikedSongs }) => {
       )}
 
       {/* Shelf: "Made For [User]" (Matching Spotify Screenshot 2) */}
-      {activeFilter !== 'podcasts' && madeForUserList.length > 0 && (
+      {madeForUserList.length > 0 && (
         <section className="mb-8">
           <div className="flex items-center justify-between mb-3.5">
             <div>
@@ -330,70 +311,8 @@ export const SpotifyBrowseView = ({ onOpenPlaylist, onOpenLikedSongs }) => {
         </section>
       )}
 
-      {/* Shelf: "Episodes you might like" (Podcasts - Matching Screenshot 2) */}
-      {(activeFilter === 'all' || activeFilter === 'podcasts') && episodesYouMightLike.length > 0 && (
-        <section className="mb-8">
-          <div className="flex items-center justify-between mb-3.5">
-            <h2 
-              onClick={() => setExpandedCategory('episodes')}
-              className="text-lg sm:text-2xl font-bold font-display text-white tracking-tight hover:underline cursor-pointer"
-            >
-              Episodes you might like
-            </h2>
-            <span 
-              onClick={() => setExpandedCategory('episodes')}
-              className="text-xs font-bold text-slate-400 hover:text-white cursor-pointer transition-colors"
-            >
-              Show all
-            </span>
-          </div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3.5 sm:gap-4">
-            {episodesYouMightLike.map((card) => {
-              const isActive = isCollectionActive(card);
-              return (
-                <div
-                  key={card.id}
-                  onClick={() => onOpenPlaylist(card)}
-                  className="group relative p-3 rounded-lg bg-white/[0.03] hover:bg-white/[0.08] transition-all duration-200 cursor-pointer flex flex-col border border-transparent hover:border-white/10"
-                >
-                  <div className="relative w-full aspect-square rounded-md overflow-hidden mb-3 bg-slate-900 shadow-md">
-                    <img
-                      src={card.cover}
-                      alt={card.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                    <div className="absolute top-2 left-2 px-1.5 py-0.5 rounded bg-black/60 backdrop-blur-md text-[9px] font-mono text-neonAmber uppercase">
-                      Podcast
-                    </div>
-                    <button
-                      onClick={(e) => handlePlayCollection(e, card)}
-                      className={`absolute right-2.5 bottom-2.5 w-10 h-10 rounded-full bg-spotifyGreen text-slate-950 flex items-center justify-center shadow-2xl transition-all duration-200 hover:scale-110 ${
-                        isActive
-                          ? 'opacity-100 scale-100 translate-y-0'
-                          : 'opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 group-hover:scale-100'
-                      }`}
-                      title={`Play ${card.title}`}
-                    >
-                      {isActive ? <Pause className="w-4 h-4 fill-current" /> : <Play className="w-4 h-4 fill-current ml-0.5" />}
-                    </button>
-                  </div>
-
-                  <h3 className="text-xs sm:text-sm font-bold text-white truncate mb-1">
-                    {card.title}
-                  </h3>
-                  <p className="text-[11px] text-slate-400 line-clamp-2 leading-relaxed">
-                    {card.subtitle}
-                  </p>
-                </div>
-              );
-            })}
-          </div>
-        </section>
-      )}
-
-      {/* Shelf: "Jump back in" (When not on podcasts) */}
-      {activeFilter !== 'podcasts' && jumpBackInList.length > 0 && (
+      {/* Shelf: "Jump back in" */}
+      {jumpBackInList.length > 0 && (
         <section className="mb-8">
           <div className="flex items-center justify-between mb-3.5">
             <h2 
@@ -453,7 +372,7 @@ export const SpotifyBrowseView = ({ onOpenPlaylist, onOpenLikedSongs }) => {
       )}
 
       {/* Shelf: "Recommended Stations" */}
-      {activeFilter !== 'podcasts' && recommendedStations.length > 0 && (
+      {recommendedStations.length > 0 && (
         <section className="mb-8">
           <div className="flex items-center justify-between mb-3.5">
             <div>
@@ -525,7 +444,7 @@ export const SpotifyBrowseView = ({ onOpenPlaylist, onOpenLikedSongs }) => {
       )}
 
       {/* Shelf: "More of what you like" */}
-      {activeFilter !== 'podcasts' && moreOfWhatYouLike.length > 0 && (
+      {moreOfWhatYouLike.length > 0 && (
         <section className="mb-8">
           <div className="flex items-center justify-between mb-3.5">
             <div>

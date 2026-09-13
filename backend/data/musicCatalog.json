@@ -1,0 +1,882 @@
+{
+  "qaGarbaTracks": [
+    {
+      "id": "saavn-_kX0hd18",
+      "name": "Chogada",
+      "artists": "Lijo George-Dj Chetas",
+      "albumName": "Loveyatri - A Journey Of Love",
+      "albumArt": "https://c.saavncdn.com/401/Loveyatri-A-Journey-Of-Love-Hindi-2018-20181003-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/401/6dee5bf724016e494f2b08bc868824ad_320.mp4",
+      "duration": 249000,
+      "genre": "Garba"
+    },
+    {
+      "id": "saavn-qJF0prIH",
+      "name": "Nagada Sang Dhol",
+      "artists": "Sanjay Leela Bhansali",
+      "albumName": "Goliyon Ki Raasleela Ram-Leela",
+      "albumArt": "https://c.saavncdn.com/914/Goliyon-Ki-Raasleela-Ram-Leela-Hindi-2025-20250930143415-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/914/c7e844c1c4e7a4bf09b4d2e2bbc39832_320.mp4",
+      "duration": 273000,
+      "genre": "Garba"
+    },
+    {
+      "id": "saavn-UXmSGgYg",
+      "name": "Dholida",
+      "artists": "Tanishk Bagchi",
+      "albumName": "Loveyatri - A Journey Of Love",
+      "albumArt": "https://c.saavncdn.com/401/Loveyatri-A-Journey-Of-Love-Hindi-2018-20181003-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/401/f877ecb847c6241474952b0cda3eafda_320.mp4",
+      "duration": 216000,
+      "genre": "Garba"
+    },
+    {
+      "id": "saavn-JRyvdMsA",
+      "name": "Kamariya",
+      "artists": "Lijo George, Dj Chetas",
+      "albumName": "Mitron",
+      "albumArt": "https://c.saavncdn.com/764/Mitron-Hindi-2018-20180831135137-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/764/5b7711718e5d7aa92c6e4daa132b344e_320.mp4",
+      "duration": 251000,
+      "genre": "Garba"
+    }
+  ],
+  "qaEmraanTracks": [
+    {
+      "id": "saavn-VQp1eXug",
+      "name": "Zara Sa",
+      "artists": "Pritam",
+      "albumName": "Jannat",
+      "albumArt": "https://c.saavncdn.com/801/Jannat-Hindi-2008-20190629135803-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/801/571617f7810fb699ed56bc8a7d9e40d9_320.mp4",
+      "duration": 302000,
+      "genre": "Emraan Hashmi"
+    },
+    {
+      "id": "saavn-QRfQrIA9",
+      "name": "Tu Hi Meri Shab Hai",
+      "artists": "Pritam",
+      "albumName": "Gangster",
+      "albumArt": "https://c.saavncdn.com/810/Gangster-Hindi-2026-20260327190823-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/810/b5d844d94653a4bc1bc819198e299a34_320.mp4",
+      "duration": 387000,
+      "genre": "Emraan Hashmi"
+    },
+    {
+      "id": "saavn-llxluOsu",
+      "name": "Pee Loon",
+      "artists": "Pritam",
+      "albumName": "Once Upon A Time In Mumbaai",
+      "albumArt": "https://c.saavncdn.com/512/Once-Upon-A-Time-In-Mumbaai-Hindi-2010-20241223141749-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/512/95ff31ff7ae963c417ec207d7de91f5c_320.mp4",
+      "duration": 285000,
+      "genre": "Emraan Hashmi"
+    },
+    {
+      "id": "saavn-0tJQw5hX",
+      "name": "Kya Mujhe Pyar Hai (From &quot;Woh Lamhe&quot;)",
+      "artists": "Atif Aslam",
+      "albumName": "Romantic Hits Of K.K.",
+      "albumArt": "https://c.saavncdn.com/857/Romantic-Hits-Of-K-K-Hindi-2025-20251202151020-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/857/d8bccb092e019be5855fc061824249ad_320.mp4",
+      "duration": 266000,
+      "genre": "Emraan Hashmi"
+    }
+  ],
+  "qaBollywoodTracks": [
+    {
+      "id": "saavn-rjkrTnma",
+      "name": "Kesariya",
+      "artists": "Pritam",
+      "albumName": "Brahmastra",
+      "albumArt": "https://c.saavncdn.com/871/Brahmastra-Original-Motion-Picture-Soundtrack-Hindi-2022-20221006155213-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/871/c2febd353f3a076a406fa37510f31f9f_320.mp4",
+      "duration": 268000,
+      "genre": "Bollywood"
+    },
+    {
+      "id": "saavn-qZtKBMZ_",
+      "name": "Apna Bana Le",
+      "artists": "Sachin-Jigar",
+      "albumName": "Bhediya",
+      "albumArt": "https://c.saavncdn.com/815/Bhediya-Hindi-2023-20230927155213-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/815/483a6e118e8108cbb3e5cd8701674f32_320.mp4",
+      "duration": 261000,
+      "genre": "Bollywood"
+    },
+    {
+      "id": "saavn-faloMmjX",
+      "name": "Chaleya",
+      "artists": "Anirudh Ravichander",
+      "albumName": "Jawan",
+      "albumArt": "https://c.saavncdn.com/047/Jawan-Hindi-2023-20230921190854-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/047/d1366530468931703ac909e82a3ee788_320.mp4",
+      "duration": 200000,
+      "genre": "Bollywood"
+    },
+    {
+      "id": "saavn-wcsDiSsA",
+      "name": "O Maahi",
+      "artists": "Pritam",
+      "albumName": "Dunki",
+      "albumArt": "https://c.saavncdn.com/139/Dunki-Hindi-2023-20231220211003-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/139/61036495c7ba45adf72a856b60f054fd_320.mp4",
+      "duration": 233000,
+      "genre": "Bollywood"
+    }
+  ],
+  "qaPunjabiTracks": [
+    {
+      "id": "saavn-CVeqCCYc",
+      "name": "Tauba Tauba",
+      "artists": "Karan Aujla, Mr Tuomo KORANDER, Mr Tommi VATANEN",
+      "albumName": "Bad Newz",
+      "albumArt": "https://c.saavncdn.com/992/Bad-Newz-Hindi-2024-20250730113701-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/992/5d44da8bc1d78fb72d18b701d758fd1f_320.mp4",
+      "duration": 207000,
+      "genre": "Punjabi"
+    },
+    {
+      "id": "saavn-M7k5t7vw",
+      "name": "Lover",
+      "artists": "Various Artists",
+      "albumName": "MoonChild Era",
+      "albumArt": "https://c.saavncdn.com/209/MoonChild-Era-Punjabi-2021-20240715073449-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/209/88cd9a1cc0af8768d67272876bb09851_320.mp4",
+      "duration": 190000,
+      "genre": "Punjabi"
+    },
+    {
+      "id": "saavn-xzUVX40K",
+      "name": "Brown Munde",
+      "artists": "Various Artists",
+      "albumName": "Brown Munde",
+      "albumArt": "https://c.saavncdn.com/973/Brown-Munde-English-2020-20260520131422-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/973/76216adb3df5ef476f948891b40efb7a_320.mp4",
+      "duration": 254000,
+      "genre": "Punjabi"
+    },
+    {
+      "id": "saavn-K90si5_I",
+      "name": "Elevated shubh (feat. Mr kallar)",
+      "artists": "Allabakash Khan",
+      "albumName": "Elevated shubh (feat. Mr kallar)",
+      "albumArt": "https://c.saavncdn.com/477/Elevated-shubh-feat-Mr-kallar-Hindi-2023-20230314200318-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/477/e97849f7ed8c692c4e206bef3e286d45_320.mp4",
+      "duration": 250000,
+      "genre": "Punjabi"
+    }
+  ],
+  "qaHiphopTracks": [
+    {
+      "id": "saavn-VGjlSPMD",
+      "name": "Mockingbird",
+      "artists": "Various Artists",
+      "albumName": "Encore",
+      "albumArt": "https://c.saavncdn.com/973/Encore-English-2004-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/973/5f87740eb4bbc3d668f31d3c62ec9cfb_320.mp4",
+      "duration": 251000,
+      "genre": "Hip-Hop"
+    },
+    {
+      "id": "saavn-ccsVSBDR",
+      "name": "Lose Yourself",
+      "artists": "Jeff Bass, Luis Resto, Marshall Mathers",
+      "albumName": "Curtain Call: The Hits",
+      "albumArt": "https://c.saavncdn.com/934/Curtain-Call-The-Hits-English-2005-20250826045028-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/934/f9eb5732f5c0f0c7a69c35d315f64a08_320.mp4",
+      "duration": 326000,
+      "genre": "Hip-Hop"
+    },
+    {
+      "id": "saavn-cst2LxFR",
+      "name": "Without Me",
+      "artists": "Jeff Bass, Marshall Mathers, Kevin Bell, Malcolm Mclaren, Trevor Horn, Anne Dudley",
+      "albumName": "The Eminem Show",
+      "albumArt": "https://c.saavncdn.com/020/The-Eminem-Show-Unknown-2007-20250826100622-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/020/eff2ae4f39daa5c6bf24f73a16513654_320.mp4",
+      "duration": 290000,
+      "genre": "Hip-Hop"
+    },
+    {
+      "id": "saavn-IYYZtvGK",
+      "name": "Godzilla",
+      "artists": "Luis Resto, Marshall Mathers, D. Doman, Jarad Higgins, A. Villasana",
+      "albumName": "Music To Be Murdered By",
+      "albumArt": "https://c.saavncdn.com/830/Music-To-Be-Murdered-By-English-2020-20200117040807-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/830/e17defe16f9e3eda8895f83cb4676ab5_320.mp4",
+      "duration": 211000,
+      "genre": "Hip-Hop"
+    }
+  ],
+  "qaHighwayTracks": [
+    {
+      "id": "saavn-uzJ8lxvw",
+      "name": "Safarnama",
+      "artists": "A.R. Rahman",
+      "albumName": "Tamasha",
+      "albumArt": "https://c.saavncdn.com/994/Tamasha-Hindi-2015-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/994/7553cf4082b65b2a0b9e160d06d1eef9_320.mp4",
+      "duration": 252000,
+      "genre": "Highway"
+    },
+    {
+      "id": "saavn-4CI_0bzt",
+      "name": "Ilahi",
+      "artists": "Pritam",
+      "albumName": "Yeh Jawaani Hai Deewani",
+      "albumArt": "https://c.saavncdn.com/440/Yeh-Jawaani-Hai-Deewani-2013-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/440/a784bdaf2e6e4faba7b8282b8612f829_320.mp4",
+      "duration": 230000,
+      "genre": "Highway"
+    },
+    {
+      "id": "saavn-E7Cj5CYn",
+      "name": "Matargashti",
+      "artists": "A.R. Rahman",
+      "albumName": "Tamasha",
+      "albumArt": "https://c.saavncdn.com/994/Tamasha-Hindi-2015-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/994/319b6797d55352c49cbdf53e57ec9095_320.mp4",
+      "duration": 328000,
+      "genre": "Highway"
+    },
+    {
+      "id": "saavn-EvaQr_UY",
+      "name": "Dil Chahta Hai",
+      "artists": "Shankar-Ehsaan-Loy",
+      "albumName": "Dil Chahta Hai",
+      "albumArt": "https://c.saavncdn.com/219/Dil-Chahta-Hai-Hindi-2001-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/219/e92e9a632990c55bf3f9e1cc41c071c7_320.mp4",
+      "duration": 310000,
+      "genre": "Highway"
+    }
+  ],
+  "qaLofiTracks": [
+    {
+      "id": "saavn-d0hutlj_",
+      "name": "Baarishein",
+      "artists": "Anuv Jain",
+      "albumName": "Barish Vibes",
+      "albumArt": "https://c.saavncdn.com/324/Barish-VIbes-Hindi-2026-20260716230015-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/324/4b7744968a4148bc89669257ef2a7f41_320.mp4",
+      "duration": 207000,
+      "genre": "Lo-Fi"
+    },
+    {
+      "id": "saavn-Jzpfzszr",
+      "name": "Kasoor",
+      "artists": "Prateek Kuhad",
+      "albumName": "Kasoor",
+      "albumArt": "https://c.saavncdn.com/036/Kasoor-Hindi-2020-20200623224600-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/036/5ac1b1f1898a2e772191079ae1186e4c_320.mp4",
+      "duration": 197000,
+      "genre": "Lo-Fi"
+    },
+    {
+      "id": "saavn-9pGjMYQN",
+      "name": "Kho Gaye Hum Kahan",
+      "artists": "Jasleen Royal",
+      "albumName": "Hindi Chill Mix",
+      "albumArt": "https://c.saavncdn.com/828/Hindi-Chill-Mix-Hindi-2026-20260511211108-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/828/faa35f80f87172a3965c9989acea29f2_320.mp4",
+      "duration": 213000,
+      "genre": "Lo-Fi"
+    },
+    {
+      "id": "saavn-6f34n5wM",
+      "name": "Choo Lo",
+      "artists": "The Local Train, Paras Thakur, Ramit Mehra, Sahil Sarin, Raman Negi",
+      "albumName": "Aalas Ka Pedh",
+      "albumArt": "https://c.saavncdn.com/111/Aalas-Ka-Pedh-Hindi-2015-20231005005130-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/111/09c5dba8ec03665a9a679e19338917a6_320.mp4",
+      "duration": 233000,
+      "genre": "Lo-Fi"
+    }
+  ],
+  "dm1Tracks": [
+    {
+      "id": "saavn-W-d2FbBr",
+      "name": "Alag Aasmaan",
+      "artists": "Various Artists",
+      "albumName": "Alag Aasmaan",
+      "albumArt": "https://c.saavncdn.com/879/Alag-Aasmaan-Unknown-2020-20200716212927-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/879/72ded7665bbd5f8947f014de81e5fc1d_320.mp4",
+      "duration": 213000,
+      "genre": "Indie"
+    },
+    {
+      "id": "saavn-_WVIcEvf",
+      "name": "Gul",
+      "artists": "Various Artists",
+      "albumName": "Gul",
+      "albumArt": "https://c.saavncdn.com/266/Gul-Hindi-2021-20210706151615-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/266/75a2c612178dea03a50e943310efa85f_320.mp4",
+      "duration": 218000,
+      "genre": "Indie"
+    },
+    {
+      "id": "saavn-I5SqBU62",
+      "name": "Waqt Ki Baatein",
+      "artists": "Dream Note",
+      "albumName": "Waqt Ki Baatein - Single",
+      "albumArt": "https://c.saavncdn.com/084/Waqt-Ki-Baatein-Single-Hindi-2018-20180412143803-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/084/d953a60203af8d816ca83cc167556bfd_320.mp4",
+      "duration": 243000,
+      "genre": "Indie"
+    }
+  ],
+  "dm2Tracks": [
+    {
+      "id": "saavn-yfSTv1J7",
+      "name": "Say My Name",
+      "artists": "Krishna Kaul",
+      "albumName": "Say My Name",
+      "albumArt": "https://c.saavncdn.com/929/Say-My-Name-Hindi-2020-20260605054438-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/929/401033b70fe3cec7643f3426dfe59203_320.mp4",
+      "duration": 162000,
+      "genre": "Desi Hip-Hop"
+    },
+    {
+      "id": "saavn-DKUPhv0l",
+      "name": "Machayenge",
+      "artists": "Emiway Bantai, Mohd Bilal Shaikh",
+      "albumName": "Machayenge",
+      "albumArt": "https://c.saavncdn.com/714/Machayenge-Hindi-2019-20230228064934-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/714/7b7850bdcc5da8d09109642bf0afed8a_320.mp4",
+      "duration": 152000,
+      "genre": "Desi Hip-Hop"
+    },
+    {
+      "id": "saavn-Sp3usdZ7",
+      "name": "No Cap",
+      "artists": "Krishna Kaul",
+      "albumName": "No Cap",
+      "albumArt": "https://c.saavncdn.com/402/No-Cap-Hindi-2021-20260605065704-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/402/a217bdb768ea0d579d1dc989d1c143d2_320.mp4",
+      "duration": 205000,
+      "genre": "Desi Hip-Hop"
+    }
+  ],
+  "dm3Tracks": [
+    {
+      "id": "saavn-28hkqSvk",
+      "name": "Kun Faya Kun (From \"Rockstar\")",
+      "artists": "A.R. Rahman",
+      "albumName": "World Music Day - Best Of Bollywood Hits",
+      "albumArt": "https://c.saavncdn.com/179/World-Music-Day-Best-Of-Bollywood-Hits-Hindi-2026-20260622111029-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/179/53fd6b97b1616b941b115f840e8b1e42_320.mp4",
+      "duration": 469000,
+      "genre": "Sufi"
+    },
+    {
+      "id": "saavn-XnwenJqr",
+      "name": "Arziyan",
+      "artists": "A.R. Rahman",
+      "albumName": "Delhi 6",
+      "albumArt": "https://c.saavncdn.com/931/Delhi-6-2009-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/931/9f5277b57ff29b68dfbab4135c57ba1a_320.mp4",
+      "duration": 521000,
+      "genre": "Sufi"
+    },
+    {
+      "id": "saavn-AhQQQbD1",
+      "name": "Khwaja Mere Khwaja",
+      "artists": "A.R. Rahman",
+      "albumName": "Jodhaa Akbar",
+      "albumArt": "https://c.saavncdn.com/016/Jodhaa-Akbar-Hindi-2007-20201029165330-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/016/8fa67bbdf6ab5ac0bcfe8e80699e754c_320.mp4",
+      "duration": 417000,
+      "genre": "Sufi"
+    }
+  ],
+  "dm4Tracks": [
+    {
+      "id": "saavn-FAZW_HoE",
+      "name": "Odhani",
+      "artists": "Sachin Sanghvi, Jigar Saraiya",
+      "albumName": "Made in China",
+      "albumArt": "https://c.saavncdn.com/459/Made-in-China-Hindi-2019-20191111120759-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/459/f9f6ad772bddf4e3c928e0782d202d0d_320.mp4",
+      "duration": 195000,
+      "genre": "Dandiya"
+    },
+    {
+      "id": "saavn-PxisBl68",
+      "name": "Sanedo",
+      "artists": "Tanishk Bagchi, Vayu",
+      "albumName": "Mitron",
+      "albumArt": "https://c.saavncdn.com/764/Mitron-Hindi-2018-20180831135137-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/764/38b3a317723509dc482e99bc0016bc96_320.mp4",
+      "duration": 158000,
+      "genre": "Dandiya"
+    },
+    {
+      "id": "saavn-PZGFP22k",
+      "name": "Shubhaarambh",
+      "artists": "Amit Trivedi",
+      "albumName": "Kai Po Che",
+      "albumArt": "https://c.saavncdn.com/671/Kai-Po-Che-Hindi-2013-20200620081833-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/671/5c4d06572b9d479f4847210705a8991d_320.mp4",
+      "duration": 234000,
+      "genre": "Dandiya"
+    }
+  ],
+  "dm5Tracks": [
+    {
+      "id": "saavn-CnDOe8-S",
+      "name": "Pyar Diwana Hota Hai",
+      "artists": "R.D. Burman",
+      "albumName": "Kati Patang",
+      "albumArt": "https://c.saavncdn.com/715/Kati-Patang-Hindi-1970-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/715/ffb496de66c2b6d5eb7885668815b520_sar_320.mp4",
+      "duration": 284000,
+      "genre": "Classics"
+    },
+    {
+      "id": "saavn-OwH8X1w6",
+      "name": "Yeh Shaam Mastani",
+      "artists": "Abhijeet, Kishore Kumar, R.D. Burman",
+      "albumName": "Gems Of Kishore Kumar",
+      "albumArt": "https://c.saavncdn.com/398/Gems-Of-Kishore-Kumar-Hindi-1994-20260209103233-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/398/9dc23f6c7bd24542d991b550e933332a_320.mp4",
+      "duration": 220000,
+      "genre": "Classics"
+    },
+    {
+      "id": "saavn-9rY8kaPt",
+      "name": "Pal Pal Dil Ke Paas (From \"Blackmail\")",
+      "artists": "Kalyanji–Anandji",
+      "albumName": "Blackmail",
+      "albumArt": "https://c.saavncdn.com/821/Blackmail-Hindi-1973-20190924060932-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/821/fc6676156d0bab59229fc17f48ad2956_320.mp4",
+      "duration": 327000,
+      "genre": "Classics"
+    }
+  ],
+  "dm6Tracks": [
+    {
+      "id": "saavn-_QHbAsOZ",
+      "name": "Kar Gayi Chull",
+      "artists": "Badshah, Amaal Mallik",
+      "albumName": "Kapoor & Sons (Since 1921)",
+      "albumArt": "https://c.saavncdn.com/978/Kapoor-Sons-Since-1921--Hindi-2016-20180504172446-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/978/e7a6e97299ca851067e09e31fec18e6f_320.mp4",
+      "duration": 187000,
+      "genre": "Party"
+    },
+    {
+      "id": "saavn-9xnr1G5u",
+      "name": "Kala Chashma",
+      "artists": "Prem-Hardeep, Badshah, Kam Dhillon",
+      "albumName": "Baar Baar Dekho",
+      "albumArt": "https://c.saavncdn.com/279/Baar-Baar-Dekho-Hindi-2016-20181205114400-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/279/ac760f157a9cf82a96ac1440b01bdf18_320.mp4",
+      "duration": 187000,
+      "genre": "Party"
+    },
+    {
+      "id": "saavn-_xepYjRk",
+      "name": "Abhi Toh Party Shuru Hui Hai",
+      "artists": "Badshah",
+      "albumName": "Khoobsurat",
+      "albumArt": "https://c.saavncdn.com/282/Khoobsurat-Hindi-2014-20250510165659-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/666/114f4b83eedf5b119ebefc4b0ad0e759_320.mp4",
+      "duration": 180000,
+      "genre": "Party"
+    }
+  ],
+  "discoverWeeklyTracks": [
+    {
+      "id": "saavn-X0zxHHfs",
+      "name": "Husn",
+      "artists": "Anuv Jain",
+      "albumName": "Husn",
+      "albumArt": "https://c.saavncdn.com/436/Husn-Hindi-2023-20231129054140-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/436/13795b7aa2e87393366162b9e6a6fe88_320.mp4",
+      "duration": 217000,
+      "genre": "Indie"
+    },
+    {
+      "id": "saavn-U8S63knt",
+      "name": "Pasoori (Originally Performed by Shae Gill & Ali Sethi)",
+      "artists": "Various Artists",
+      "albumName": "Pristine Karaoke, Vol. 66",
+      "albumArt": "https://c.saavncdn.com/591/Pristine-Karaoke-Vol-66-Unknown-2022-20220503065453-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/591/7f92de29b81b95ff78f2ae7f3022b5de_320.mp4",
+      "duration": 218000,
+      "genre": "Indie Pop"
+    },
+    {
+      "id": "saavn-0pbcquTq",
+      "name": "Kahani Suno 2.0 (feat. Kaifi Khalil) (Slowed and Reverbed)",
+      "artists": "Various Artists",
+      "albumName": "Kahani Suno 2.0 (feat. Kaifi Khalil) [Slowed and Reverbed]",
+      "albumArt": "https://c.saavncdn.com/371/Kahani-Suno-2-0-feat-Kaifi-Khalil-Slowed-and-Reverbed-English-2023-20230216024616-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/371/d955e6c5bc587ea477a3e83dc361612d_320.mp4",
+      "duration": 202000,
+      "genre": "Indie Pop"
+    },
+    {
+      "id": "saavn-qBcuCu6G",
+      "name": "Iraaday",
+      "artists": "Various Artists",
+      "albumName": "Iraaday",
+      "albumArt": "https://c.saavncdn.com/788/Iraaday-English-2022-20220317032037-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/788/2e98cc4104e45a4d678c757b5496fef1_320.mp4",
+      "duration": 133000,
+      "genre": "Indie Pop"
+    }
+  ],
+  "jbBhojpuri": [
+    {
+      "id": "saavn-JM3n54LC",
+      "name": "Lollipop Lagelu 2",
+      "artists": "Pawan Singh",
+      "albumName": "Lollipop Lagelu 2",
+      "albumArt": "https://c.saavncdn.com/150/Lollipop-Lagelu-2-Bhojpuri-2022-20220830032440-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/150/996166faf523aa2452aac34bd9c21b86_320.mp4",
+      "duration": 178000,
+      "genre": "Bhojpuri"
+    },
+    {
+      "id": "saavn-P3Sx1I_n",
+      "name": "Raja Hamra Se",
+      "artists": "Khesari Lal Yadav, Shilpi Raj, Arya Sharma",
+      "albumName": "Raja Hamra Se",
+      "albumArt": "https://c.saavncdn.com/177/Raja-Hamra-Se-Hindi-2026-20260108204005-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/177/25363bfb783745ecc540f8b7d540dc09_320.mp4",
+      "duration": 232000,
+      "genre": "Bhojpuri"
+    }
+  ],
+  "jbDiljit": [
+    {
+      "id": "saavn-aAOXwvz-",
+      "name": "Born to Shine",
+      "artists": "Goldy Desi Crew",
+      "albumName": "G.O.A.T.",
+      "albumArt": "https://c.saavncdn.com/597/G-O-A-T-Punjabi-2020-20240708055140-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/597/f1efd650819d3f427bd10e8b9addcd40_320.mp4",
+      "duration": 214000,
+      "genre": "Punjabi"
+    },
+    {
+      "id": "saavn-0Cu5Kha8",
+      "name": "Lemonade",
+      "artists": "Various Artists",
+      "albumName": "Drive Thru",
+      "albumArt": "https://c.saavncdn.com/467/Drive-Thru-Punjabi-2022-20240708054744-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/467/c1f149509d4ee7d20c0c4474090ab5f1_320.mp4",
+      "duration": 167000,
+      "genre": "Punjabi"
+    }
+  ],
+  "jbNavratri": [
+    {
+      "id": "saavn-uDBy6HVI",
+      "name": "Dholi Taro Dhol Baaje",
+      "artists": "Ismail Darbar",
+      "albumName": "Hum Dil De Chuke Sanam",
+      "albumArt": "https://c.saavncdn.com/963/Hum-Dil-De-Chuke-Sanam-Hindi-1999-20221128131837-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/963/ea4026f1496e7c6ae76f821e9678b00c_320.mp4",
+      "duration": 373000,
+      "genre": "Garba"
+    },
+    {
+      "id": "saavn-eThcyqUq",
+      "name": "Radhe Radhe",
+      "artists": "Meet Bros",
+      "albumName": "Dream Girl",
+      "albumArt": "https://c.saavncdn.com/319/Dream-Girl-Hindi-2019-20190914125707-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/319/a8fa7f11e4f7113dd90e0dce0c8beb28_320.mp4",
+      "duration": 210000,
+      "genre": "Garba"
+    }
+  ],
+  "jbBhajan": [
+    {
+      "id": "saavn-7CwLvXc6",
+      "name": "Shree Hanuman Chalisa",
+      "artists": "Lalit Sen, Chander",
+      "albumName": "Shree Hanuman Chalisa (Hanuman Ashtak)",
+      "albumArt": "https://c.saavncdn.com/256/Shree-Hanuman-Chalisa-Hanuman-Ashtak-Hindi-1992-20260324161030-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/256/254c18ccf39f955649057ed4426aa7f3_320.mp4",
+      "duration": 586000,
+      "genre": "Devotional"
+    },
+    {
+      "id": "saavn-BE2nq7JH",
+      "name": "Namo Namo",
+      "artists": "Amit Trivedi",
+      "albumName": "Kedarnath",
+      "albumArt": "https://c.saavncdn.com/367/Kedarnath-Hindi-2019-20190219-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/367/c5de371dc840f6fd7d55d8b1fecefa0c_320.mp4",
+      "duration": 322000,
+      "genre": "Devotional"
+    }
+  ],
+  "jbArijit": [
+    {
+      "id": "saavn-aRZbUYD7",
+      "name": "Tum Hi Ho",
+      "artists": "Mithoon",
+      "albumName": "Aashiqui 2",
+      "albumArt": "https://c.saavncdn.com/430/Aashiqui-2-Hindi-2013-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/430/5c5ea5cc00e3bff45616013226f376fe_320.mp4",
+      "duration": 262000,
+      "genre": "Bollywood"
+    },
+    {
+      "id": "saavn-4NRpZd1v",
+      "name": "Hawayein",
+      "artists": "Pritam",
+      "albumName": "Jab Harry Met Sejal",
+      "albumArt": "https://c.saavncdn.com/584/Jab-Harry-Met-Sejal-Hindi-2017-20170803161007-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/584/1c4f10826f2336b0cb7db275f1051f8c_320.mp4",
+      "duration": 289000,
+      "genre": "Bollywood"
+    }
+  ],
+  "stKrsna": [
+    {
+      "id": "saavn-gwi-7v6z",
+      "name": "Roll Up",
+      "artists": "Badshah, Krishna Kaul",
+      "albumName": "Roll Up",
+      "albumArt": "https://c.saavncdn.com/582/Roll-Up-Hindi-2021-20260605070228-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/582/ed0541c04948fea32045da865e5bdeb4_320.mp4",
+      "duration": 195000,
+      "genre": "Hip-Hop"
+    },
+    {
+      "id": "saavn-FuRDRYeo",
+      "name": "Saza-E-Maut",
+      "artists": "Raftaar, Krishna Kaul",
+      "albumName": "Still Here",
+      "albumArt": "https://c.saavncdn.com/019/Still-Here-Hindi-2021-20260605065334-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/019/2868bc7e6ec129230d33c4ef574f4dd3_320.mp4",
+      "duration": 180000,
+      "genre": "Hip-Hop"
+    }
+  ],
+  "stArijit": [
+    {
+      "id": "saavn-_rJmbKSP",
+      "name": "Shayad",
+      "artists": "Pritam",
+      "albumName": "Love Aaj Kal",
+      "albumArt": "https://c.saavncdn.com/862/Love-Aaj-Kal-Hindi-2020-20200214140423-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/862/e277c1b441b562640c6b264aa3335a83_320.mp4",
+      "duration": 247000,
+      "genre": "Bollywood"
+    },
+    {
+      "id": "saavn-zekEI3N6",
+      "name": "Ae Dil Hai Mushkil Title Track",
+      "artists": "Pritam",
+      "albumName": "Ae Dil Hai Mushkil",
+      "albumArt": "https://c.saavncdn.com/257/Ae-Dil-Hai-Mushkil-Hindi-2016-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/597/3b003e3fd083bad975ca12ca6f83c94d_320.mp4",
+      "duration": 268000,
+      "genre": "Bollywood"
+    }
+  ],
+  "stDiljit": [
+    {
+      "id": "saavn-qyR_6Xi-",
+      "name": "Peaches",
+      "artists": "Various Artists",
+      "albumName": "Drive Thru",
+      "albumArt": "https://c.saavncdn.com/467/Drive-Thru-Punjabi-2022-20240708054744-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/467/550c4767762e9cc6b48d82647fd3bc77_320.mp4",
+      "duration": 190000,
+      "genre": "Punjabi"
+    },
+    {
+      "id": "saavn-Xu8E5ITQ",
+      "name": "Naina (From \"Crew\")",
+      "artists": "Raj Ranjodh",
+      "albumName": "Bollywood New Love Hits",
+      "albumArt": "https://c.saavncdn.com/970/Bollywood-New-Love-Hits-Hindi-2026-20260907173844-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/970/ff10b736e25e03ae0e165132531df7e7_320.mp4",
+      "duration": 180000,
+      "genre": "Punjabi"
+    }
+  ],
+  "stSidhu": [
+    {
+      "id": "saavn-H2r9PnvA",
+      "name": "295",
+      "artists": "Sidhu Moose Wala",
+      "albumName": "Moosetape",
+      "albumArt": "https://c.saavncdn.com/609/Moosetape-Punjabi-2021-20260626155141-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/609/852628435c98083dfe217c1cfa731bb5_320.mp4",
+      "duration": 270000,
+      "genre": "Punjabi"
+    },
+    {
+      "id": "saavn-Xh5BINhG",
+      "name": "The Last Ride",
+      "artists": "Sidhu Moose Wala",
+      "albumName": "The Last Ride",
+      "albumArt": "https://c.saavncdn.com/582/The-Last-Ride-Punjabi-2022-20260626154442-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/582/98963d97964984873d3aaa89dd4496b5_320.mp4",
+      "duration": 262000,
+      "genre": "Punjabi"
+    }
+  ],
+  "stEminem": [
+    {
+      "id": "saavn-6_Lkkdb-",
+      "name": "The Real Slim Shady",
+      "artists": "Mike Elizondo, Marshall Mathers, Andre R. Young, Tom Coster",
+      "albumName": "Curtain Call: The Hits",
+      "albumArt": "https://c.saavncdn.com/941/Curtain-Call-The-Hits-English-2005-20250827231103-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/941/66e3ab6dc1d10af73f0f26bf3914ffd4_320.mp4",
+      "duration": 284000,
+      "genre": "Hip-Hop"
+    },
+    {
+      "id": "saavn-wN-qubjj",
+      "name": "Not Afraid",
+      "artists": "Marshall Mathers, Luis Resto, J. Evans, M. Burnett, Matthew Samuels",
+      "albumName": "STANS (The Official Soundtrack)",
+      "albumArt": "https://c.saavncdn.com/108/STANS-The-Official-Soundtrack-English-2025-20250828040035-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/108/b7ea44713f9acdd2e2baaf862c24c4e3_320.mp4",
+      "duration": 251000,
+      "genre": "Hip-Hop"
+    }
+  ],
+  "moreTrending": [
+    {
+      "id": "saavn-4mHUvJ4u",
+      "name": "Satranga",
+      "artists": "Shreyas Puranik",
+      "albumName": "ANIMAL",
+      "albumArt": "https://c.saavncdn.com/092/ANIMAL-Hindi-2023-20260724191152-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/092/86b1368e104225e0bfbc69cda4ab8580_320.mp4",
+      "duration": 271000,
+      "genre": "Bollywood"
+    },
+    {
+      "id": "saavn-rBltEr7X",
+      "name": "Tere Vaaste (From \"Zara Hatke Zara Bachke\")",
+      "artists": "Sachin-Jigar, Varun Jain, Shadab Faridi, Altamash Faridi, Amitabh Bhattacharya",
+      "albumName": "Zara Hatke Zara Bachke",
+      "albumArt": "https://c.saavncdn.com/336/Zara-Hatke-Zara-Bachke-Hindi-2023-20250129153124-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/336/79c5f3faf1ab2747f19384ed319786d4_320.mp4",
+      "duration": 189000,
+      "genre": "Bollywood"
+    }
+  ],
+  "moreHindi": [
+    {
+      "id": "saavn-1e0En7YX",
+      "name": "Pehle Bhi Main",
+      "artists": "Vishal Mishra",
+      "albumName": "ANIMAL",
+      "albumArt": "https://c.saavncdn.com/092/ANIMAL-Hindi-2023-20260724191152-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/092/81b52beea90f186f27cf5c5eead972c8_320.mp4",
+      "duration": 250000,
+      "genre": "Bollywood"
+    },
+    {
+      "id": "saavn-uhSzSD67",
+      "name": "Main Parwaana",
+      "artists": "A.R. Rahman, Arijit Singh, Pooja Tiwari, Nisa Shetty, Rakshita Suresh",
+      "albumName": "Pippa",
+      "albumArt": "https://c.saavncdn.com/311/Pippa-Hindi-2023-20231109192753-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/311/3a7c53a655bb0495b27d5f7656c87441_320.mp4",
+      "duration": 323000,
+      "genre": "Bollywood"
+    }
+  ],
+  "moreClassics": [
+    {
+      "id": "saavn-JLGhq6Do",
+      "name": "Chura Liya Hai Tumne Jo Dil Ko",
+      "artists": "R.D. Burman",
+      "albumName": "Yaadon Ki Baaraat",
+      "albumArt": "https://c.saavncdn.com/854/Yaadon-Ki-Baaraat-Hindi-1973-20200622062706-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/854/a48723fa6382061a3db02b90c5c0bd43_sar_320.mp4",
+      "duration": 289000,
+      "genre": "Classics"
+    },
+    {
+      "id": "saavn-iuNIEhgW",
+      "name": "Roop Tera Mastana",
+      "artists": "S. D. Burman",
+      "albumName": "Aradhana",
+      "albumArt": "https://c.saavncdn.com/951/Aradhana-Hindi-1969-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/951/567184a01fadc302e3bc9b8c2db37347_sar_320.mp4",
+      "duration": 225000,
+      "genre": "Classics"
+    }
+  ],
+  "moreSafar": [
+    {
+      "id": "saavn--fZxHyJp",
+      "name": "Khaabon Ke Parinday",
+      "artists": "Shankar-Ehsaan-Loy",
+      "albumName": "Zindagi Na Milegi Dobara",
+      "albumArt": "https://c.saavncdn.com/296/Zindagi-Na-Milegi-Dobara-Hindi-2011-20260525191006-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/296/22dde91eea97dc53d68868cbbf31cf70_320.mp4",
+      "duration": 251000,
+      "genre": "Highway"
+    },
+    {
+      "id": "saavn-8weYfjNG",
+      "name": "Hairat",
+      "artists": "Vishal & Shekhar",
+      "albumName": "Anjaana Anjaani",
+      "albumArt": "https://c.saavncdn.com/113/Anjaana-Anjaani-Hindi-2010-20241205131037-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/113/de8ed40d4b8aa12d87c94c38ae63144f_320.mp4",
+      "duration": 247000,
+      "genre": "Highway"
+    }
+  ],
+  "moreBhakti": [
+    {
+      "id": "saavn-9_J2ykIP",
+      "name": "Achyutam Keshavam Krishna Damodaram",
+      "artists": "Amjad Nadeem Aamir",
+      "albumName": "Achyutam Keshavam Krishna Damodaram - Zee Music Devotional",
+      "albumArt": "https://c.saavncdn.com/610/Achyutam-Keshavam-Krishna-Damodaram-Zee-Music-Devotional-Hindi-2019-20190402064504-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/729/202f146df4b2037b7ac27fc299bf81bb_320.mp4",
+      "duration": 274000,
+      "genre": "Devotional"
+    },
+    {
+      "id": "saavn-dqhyxkoH",
+      "name": "Shiv Tandav Stotram",
+      "artists": "Uma Mohan, Shailesh Dani",
+      "albumName": "Bhole Shiv Shankar",
+      "albumArt": "https://c.saavncdn.com/870/Bhole-Shiv-Shankar-Sanskrit-2025-20250720025922-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/870/4c18e7546871c08147aa76462fccc52f_320.mp4",
+      "duration": 553000,
+      "genre": "Devotional"
+    }
+  ],
+  "moreRap": [
+    {
+      "id": "saavn-ayJxuo_a",
+      "name": "Aathma Raama",
+      "artists": "Brodha V, Vighnesh S",
+      "albumName": "Aathma Raama",
+      "albumArt": "https://c.saavncdn.com/445/Aathma-Raama-Tamil-2022-20220401124604-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/445/aba9169754badec757b48125c4bdddc4_320.mp4",
+      "duration": 234000,
+      "genre": "Hip-Hop"
+    },
+    {
+      "id": "saavn-X1t7vCFG",
+      "name": "Jai Sri Krsna",
+      "artists": "Various Artists",
+      "albumName": "Mridanga",
+      "albumArt": "https://c.saavncdn.com/029/Mridanga-English-2010-500x500.jpg",
+      "audioUrl": "https://aac.saavncdn.com/029/a50f07781f01be6d24d77fff1111a2fc_320.mp4",
+      "duration": 297000,
+      "genre": "Hip-Hop"
+    }
+  ]
+}
