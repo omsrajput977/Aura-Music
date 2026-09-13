@@ -1,4 +1,12 @@
 const mongoose = require('mongoose');
+const dns = require('dns');
+
+// Configure reliable DNS servers to prevent SRV ESERVFAIL errors on macOS/Wi-Fi
+try {
+  dns.setServers(['8.8.8.8', '1.1.1.1', '8.8.4.4']);
+} catch (e) {
+  // Ignore if not permitted
+}
 
 const connectDB = async () => {
   const uri = process.env.MONGODB_URI;
