@@ -18,8 +18,8 @@
 ---
 
 ### 🌐 Live Deployment
-**🚀 [Live Demo URL - Coming Soon](#)**  
-*(Link will be updated once deployment is finalized)*
+**🚀 [Experience AURA Live](https://aura-music-sfll.onrender.com/)**  
+`https://aura-music-sfll.onrender.com/`
 
 ---
 
