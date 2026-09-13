@@ -1,0 +1,143 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html, body {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  body {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  }
+  
+  h1, h2, h3, .font-display {
+    font-family: 'Space Grotesk', system-ui, sans-serif;
+  }
+}
+
+/* Mobile Safe Area Helpers */
+.pt-safe {
+  padding-top: max(0.75rem, env(safe-area-inset-top));
+}
+
+.pb-safe {
+  padding-bottom: max(1.25rem, env(safe-area-inset-bottom));
+}
+
+/* Glassmorphic Surfaces */
+.glass-panel {
+  background: rgba(15, 17, 26, 0.65);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.glass-pill {
+  background: rgba(20, 24, 38, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4), 0 0 20px rgba(0, 242, 254, 0.15);
+}
+
+/* Realistic Vinyl Grooves Texture */
+.vinyl-disc {
+  background: 
+    radial-gradient(circle at center, transparent 35%, rgba(0, 0, 0, 0.7) 100%),
+    repeating-radial-gradient(
+      circle at center,
+      #0a0a0f 0px,
+      #13141b 1px,
+      #0d0e14 2px,
+      #1a1b24 3px,
+      #09090d 4px
+    );
+  box-shadow: 
+    0 25px 60px rgba(0, 0, 0, 0.8),
+    inset 0 0 10px rgba(0, 0, 0, 0.9),
+    0 0 0 2px rgba(255, 255, 255, 0.05);
+}
+
+/* Holographic Vinyl Light Reflection (Conic Sheen) */
+.vinyl-sheen {
+  background: conic-gradient(
+    from 45deg at 50% 50%,
+    transparent 0deg,
+    rgba(255, 255, 255, 0.12) 35deg,
+    transparent 70deg,
+    rgba(255, 255, 255, 0.08) 120deg,
+    transparent 160deg,
+    rgba(255, 255, 255, 0.14) 215deg,
+    transparent 250deg,
+    rgba(255, 255, 255, 0.08) 300deg,
+    transparent 360deg
+  );
+  mix-blend-mode: overlay;
+}
+
+/* Custom Sliders (Scrub & Volume) */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 0 10px rgba(0, 242, 254, 0.8), 0 0 2px #fff;
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+input[type="range"]:hover::-webkit-slider-thumb {
+  transform: scale(1.35);
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: none;
+  box-shadow: 0 0 10px rgba(0, 242, 254, 0.8), 0 0 2px #fff;
+}
+
+/* Subtle Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
