@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Disc3, Sparkles, ArrowRight, Play, Radio, Volume2 } from 'lucide-react';
 import { VinylRecord } from '../Turntable/VinylRecord';
 
@@ -7,6 +7,17 @@ import { VinylRecord } from '../Turntable/VinylRecord';
  * Pure high-fidelity music experience without Spotify login hurdles.
  */
 export const AvantGardeLogin = ({ onEnter }) => {
+  // Suppress Spacebar and media triggers while on the landing page
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.code === 'Space' || e.key === ' ') {
+        e.preventDefault();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
   return (
     <div className="relative h-[100dvh] min-h-[100dvh] max-h-[100dvh] w-full flex flex-col items-center justify-between p-3.5 xs:p-4 sm:p-8 md:p-12 pt-safe pb-safe overflow-hidden select-none">
       {/* Dynamic Cosmic Background Glows */}

@@ -29,7 +29,7 @@ const STORAGE_KEYS = {
 };
 
 export const PlayerProvider = ({ children }) => {
-  const { isDemoMode } = useAuth();
+  const { isDemoMode, hasEntered } = useAuth();
 
   // Playback state restored from localStorage
   const [isPlaying, setIsPlaying] = useState(false);
@@ -204,6 +204,7 @@ export const PlayerProvider = ({ children }) => {
   const handleNextRef = useRef(null);
   const handlePreviousRef = useRef(null);
   const lastSavedTimeRef = useRef(0);
+  const hasEnteredRef = useRef(hasEntered);
 
   useEffect(() => { activeQueueRef.current = activeQueue; }, [activeQueue]);
   useEffect(() => { activeQueueIndexRef.current = activeQueueIndex; }, [activeQueueIndex]);
@@ -212,6 +213,19 @@ export const PlayerProvider = ({ children }) => {
   useEffect(() => { repeatModeRef.current = repeatMode; }, [repeatMode]);
   useEffect(() => { currentTrackRef.current = currentTrack; }, [currentTrack]);
   useEffect(() => { isPlayingRef.current = isPlaying; }, [isPlaying]);
+
+  // When user is on landing page (hasEntered is false), strictly pause and deactivate media sessions
+  useEffect(() => {
+    hasEnteredRef.current = hasEntered;
+    if (!hasEntered) {
+      demoAudioRef.current.pause();
+      setIsPlaying(false);
+      if ('mediaSession' in navigator) {
+        navigator.mediaSession.metadata = null;
+        navigator.mediaSession.playbackState = 'none';
+      }
+    }
+  }, [hasEntered]);
 
   // Persist playback parameters to localStorage
   useEffect(() => {
@@ -380,7 +394,7 @@ export const PlayerProvider = ({ children }) => {
 
   // Play specific track with Spotify-style queue adoption
   const playTrackItem = async (rawTrack, contextUri = null, newQueue = null, targetIndex = null, startFromMs = 0, contextLabel = null) => {
-    if (!rawTrack) return;
+    if (!rawTrack || !hasEnteredRef.current) return;
     const track = sanitizeTrack(rawTrack);
     setCurrentTrack(track);
     currentTrackRef.current = track;
@@ -668,6 +682,15 @@ export const PlayerProvider = ({ children }) => {
     };
 
     const handleAudioPlay = () => {
+      if (!hasEnteredRef.current) {
+        audio.pause();
+        setIsPlaying(false);
+        if ('mediaSession' in navigator) {
+          navigator.mediaSession.metadata = null;
+          navigator.mediaSession.playbackState = 'none';
+        }
+        return;
+      }
       setIsPlaying(true);
       isPlayingRef.current = true;
       if ('mediaSession' in navigator) {
@@ -705,6 +728,12 @@ export const PlayerProvider = ({ children }) => {
   useEffect(() => {
     if (!('mediaSession' in navigator)) return;
 
+    if (!hasEntered) {
+      navigator.mediaSession.metadata = null;
+      navigator.mediaSession.playbackState = 'none';
+      return;
+    }
+
     if (currentTrack) {
       const artwork = [];
       if (currentTrack.albumArt) {
@@ -727,13 +756,18 @@ export const PlayerProvider = ({ children }) => {
     }
 
     navigator.mediaSession.playbackState = isPlaying ? 'playing' : 'paused';
-  }, [currentTrack, contextName, isPlaying]);
+  }, [currentTrack, contextName, isPlaying, hasEntered]);
 
   useEffect(() => {
     if (!('mediaSession' in navigator)) return;
 
     const actionHandlers = [
       ['play', async () => {
+        if (!hasEnteredRef.current) {
+          demoAudioRef.current.pause();
+          setIsPlaying(false);
+          return;
+        }
         const audio = demoAudioRef.current;
         try {
           await audio.play();
@@ -748,12 +782,15 @@ export const PlayerProvider = ({ children }) => {
         setIsPlaying(false);
       }],
       ['previoustrack', () => {
+        if (!hasEnteredRef.current) return;
         if (handlePreviousRef.current) handlePreviousRef.current();
       }],
       ['nexttrack', () => {
+        if (!hasEnteredRef.current) return;
         if (handleNextRef.current) handleNextRef.current();
       }],
       ['seekto', (details) => {
+        if (!hasEnteredRef.current) return;
         if (details.seekTime !== undefined && details.seekTime !== null) {
           seekTo(details.seekTime * 1000);
         }
@@ -778,6 +815,7 @@ export const PlayerProvider = ({ children }) => {
   // Update MediaSession position state for seekbars on lockscreen / bluetooth
   useEffect(() => {
     if (!('mediaSession' in navigator) || !('setPositionState' in navigator.mediaSession)) return;
+    if (!hasEntered) return;
     try {
       const audio = demoAudioRef.current;
       if (audio.duration && !isNaN(audio.duration) && audio.duration > 0) {
@@ -788,10 +826,13 @@ export const PlayerProvider = ({ children }) => {
         });
       }
     } catch (e) {}
-  }, [progressMs, durationMs]);
+  }, [progressMs, durationMs, hasEntered]);
 
   // Handle Play/Pause
   const togglePlay = async () => {
+    if (!hasEnteredRef.current) {
+      return;
+    }
     const audio = demoAudioRef.current;
     if (isPlaying || !audio.paused) {
       audio.pause();
