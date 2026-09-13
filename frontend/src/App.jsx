@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useLayoutEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
 import { useAuth } from './context/AuthContext';
 import { usePlayer } from './context/PlayerContext';
 import { AmbientNebula } from './components/Visualizer/AmbientNebula';
@@ -24,9 +24,7 @@ import {
   Heart, 
   LayoutGrid,
   CheckCircle2,
-  Home,
-  Play,
-  Pause
+  Home
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
@@ -181,39 +179,7 @@ export function MainPlayerApp() {
     });
   };
 
-  // Playback Visual Indicator Effect (Spacebar, Bluetooth & Media Keys)
-  const [playbackIndicator, setPlaybackIndicator] = useState(null);
-  const indicatorTimeoutRef = useRef(null);
-  const prevIsPlayingRef = useRef(isPlaying);
-  const isFirstMountRef = useRef(true);
-
-  const showPlaybackEffect = useCallback((playing) => {
-    setPlaybackIndicator({ isPlaying: playing, key: Date.now() });
-    if (indicatorTimeoutRef.current) {
-      clearTimeout(indicatorTimeoutRef.current);
-    }
-    indicatorTimeoutRef.current = setTimeout(() => {
-      setPlaybackIndicator(null);
-    }, 1100);
-  }, []);
-
-  // Sync playback state changes from all sources (e.g. Bluetooth device, Media Keys, UI buttons)
-  useEffect(() => {
-    if (isFirstMountRef.current) {
-      isFirstMountRef.current = false;
-      prevIsPlayingRef.current = isPlaying;
-      return;
-    }
-    if (prevIsPlayingRef.current !== isPlaying) {
-      prevIsPlayingRef.current = isPlaying;
-      showPlaybackEffect(isPlaying);
-      if (isPlaying) {
-        triggerCosmicDust();
-      }
-    }
-  }, [isPlaying, showPlaybackEffect]);
-
-  // Global Spacebar shortcut: toggles play/pause with visual effects without scrolling
+  // Global Spacebar shortcut: toggles play/pause cleanly without scrolling
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.code === 'Space' || e.key === ' ') {
@@ -394,42 +360,6 @@ export function MainPlayerApp() {
           <div className="px-4 py-2 rounded-full bg-slate-900/90 text-white border border-spotifyGreen/50 shadow-2xl backdrop-blur-xl flex items-center space-x-2 text-xs font-semibold">
             <CheckCircle2 className="w-4 h-4 text-spotifyGreen flex-shrink-0" />
             <span>{toastMessage}</span>
-          </div>
-        </div>
-      )}
-
-      {/* Dynamic Floating Play/Pause Feedback Indicator (Spacebar, Bluetooth & Media Keys) */}
-      {playbackIndicator && (
-        <div 
-          key={playbackIndicator.key}
-          className="fixed inset-0 m-auto w-fit h-fit z-50 pointer-events-none flex flex-col items-center justify-center animate-in fade-in zoom-in-90 duration-200"
-        >
-          <div className={`px-5 sm:px-6 py-3.5 sm:py-4 rounded-3xl backdrop-blur-2xl border shadow-[0_20px_50px_rgba(0,0,0,0.6)] flex items-center space-x-3.5 transition-all duration-300 ${
-            playbackIndicator.isPlaying
-              ? 'bg-slate-950/85 border-spotifyGreen/50 shadow-[0_0_35px_rgba(30,215,96,0.35)] ring-1 ring-spotifyGreen/30'
-              : 'bg-slate-950/85 border-white/20 shadow-[0_0_35px_rgba(255,255,255,0.12)] ring-1 ring-white/10'
-          }`}>
-            <div className={`w-11 h-11 sm:w-12 sm:h-12 rounded-full flex items-center justify-center shadow-lg transition-transform ${
-              playbackIndicator.isPlaying
-                ? 'bg-gradient-to-tr from-neonCyan to-spotifyGreen text-slate-950 shadow-[0_0_16px_rgba(30,215,96,0.5)] scale-105'
-                : 'bg-white/10 text-white border border-white/15'
-            }`}>
-              {playbackIndicator.isPlaying ? (
-                <Play className="w-5 h-5 sm:w-6 sm:h-6 fill-current ml-0.5 animate-pulse" />
-              ) : (
-                <Pause className="w-5 h-5 sm:w-6 sm:h-6 fill-current" />
-              )}
-            </div>
-            <div className="flex flex-col pr-1 sm:pr-2">
-              <span className="text-[10px] sm:text-xs font-mono font-bold tracking-widest uppercase text-slate-400">
-                {playbackIndicator.isPlaying ? 'Audio Resumed' : 'Audio Paused'}
-              </span>
-              <span className={`text-sm sm:text-base font-bold font-display tracking-wide ${
-                playbackIndicator.isPlaying ? 'text-spotifyGreen' : 'text-white'
-              }`}>
-                {playbackIndicator.isPlaying ? 'Playing' : 'Paused'}
-              </span>
-            </div>
           </div>
         </div>
       )}
