@@ -238,21 +238,36 @@ export const searchOnlineMusic = async (query, country = 'IN', limit = 16) => {
   return matched;
 };
 
+let cachedShelvesData = null;
+
 /**
- * Fetches Spotify-style categorized shelves from backend.
+ * Fetches Spotify-style categorized shelves from backend with module caching.
  */
 export const fetchShelves = async () => {
+  if (cachedShelvesData) {
+    // Return cached immediately, background refresh if needed
+    fetch('/api/music/shelves')
+      .then(r => r.json())
+      .then(d => { if (d && d.quickAccess) cachedShelvesData = d; })
+      .catch(() => {});
+    return cachedShelvesData;
+  }
   try {
     const res = await fetch('/api/music/shelves');
     if (res.ok) {
       const data = await res.json();
-      if (data && data.quickAccess) return data;
+      if (data && data.quickAccess) {
+        cachedShelvesData = data;
+        return data;
+      }
     }
   } catch (err) {
     console.warn('Shelves fetch notice:', err.message);
   }
   return null;
 };
+
+export const getCachedShelves = () => cachedShelvesData;
 
 /**
  * Fetches user's liked songs from backend with localStorage fallback.

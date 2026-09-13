@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useImperativeHandle, forwardRef } from 'react';
 import { 
   Play, 
   Pause, 
@@ -9,14 +9,14 @@ import {
   ChevronRight, 
   Mic2, 
   TrendingUp, 
-  Headphones,
+  Headphones, 
   Music 
 } from 'lucide-react';
 import { usePlayer } from '../../context/PlayerContext';
 import { useAuth } from '../../context/AuthContext';
-import { fetchShelves } from '../../utils/onlineMusicApi';
+import { fetchShelves, getCachedShelves } from '../../utils/onlineMusicApi';
 
-export const SpotifyBrowseView = ({ onOpenPlaylist, onOpenLikedSongs }) => {
+export const SpotifyBrowseView = forwardRef(({ onOpenPlaylist, onOpenLikedSongs }, ref) => {
   const { user } = useAuth();
   const {
     currentTrack,
@@ -27,8 +27,37 @@ export const SpotifyBrowseView = ({ onOpenPlaylist, onOpenLikedSongs }) => {
     contextName
   } = usePlayer();
 
-  const [shelvesData, setShelvesData] = useState(null);
+  const [shelvesData, setShelvesData] = useState(() => getCachedShelves());
   const [expandedCategory, setExpandedCategory] = useState(null);
+
+  const containerRef = useRef(null);
+  const savedCategoryScrollRef = useRef(0);
+
+  useImperativeHandle(ref, () => ({
+    resetToFrontPage: () => {
+      setExpandedCategory(null);
+    }
+  }));
+
+  const handleOpenCategory = (cat) => {
+    const parentMain = containerRef.current?.closest('main');
+    if (parentMain) {
+      savedCategoryScrollRef.current = parentMain.scrollTop;
+      parentMain.scrollTop = 0;
+    }
+    setExpandedCategory(cat);
+  };
+
+  const handleBackFromCategory = () => {
+    const saved = savedCategoryScrollRef.current;
+    setExpandedCategory(null);
+    setTimeout(() => {
+      const parentMain = containerRef.current?.closest('main');
+      if (parentMain) {
+        parentMain.scrollTop = saved;
+      }
+    }, 15);
+  };
 
   useEffect(() => {
     let mounted = true;
@@ -85,10 +114,10 @@ export const SpotifyBrowseView = ({ onOpenPlaylist, onOpenLikedSongs }) => {
     }
 
     return (
-      <div className="w-full flex-1 flex flex-col pb-44 px-3 xs:px-4 sm:px-6 md:px-8 max-w-7xl mx-auto z-10 transition-all">
+      <div ref={containerRef} className="w-full flex-1 flex flex-col pb-44 px-3 xs:px-4 sm:px-6 md:px-8 max-w-7xl mx-auto z-10 transition-all">
         <div className="pt-20 sm:pt-24 pb-4 flex items-center space-x-3">
           <button
-            onClick={() => setExpandedCategory(null)}
+            onClick={handleBackFromCategory}
             className="flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 text-xs font-semibold text-white transition-all cursor-pointer group"
           >
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
@@ -142,7 +171,7 @@ export const SpotifyBrowseView = ({ onOpenPlaylist, onOpenLikedSongs }) => {
   }
 
   return (
-    <div className="w-full flex-1 flex flex-col pb-44 px-3 xs:px-4 sm:px-6 md:px-8 max-w-7xl mx-auto z-10 transition-all">
+    <div ref={containerRef} className="w-full flex-1 flex flex-col pb-44 px-3 xs:px-4 sm:px-6 md:px-8 max-w-7xl mx-auto z-10 transition-all">
       {/* Top Header Spacing */}
       <div className="pt-20 sm:pt-24 pb-2" />
 
@@ -248,13 +277,13 @@ export const SpotifyBrowseView = ({ onOpenPlaylist, onOpenLikedSongs }) => {
                 Made For
               </span>
               <h2 className="text-lg sm:text-2xl font-bold font-display text-white tracking-tight hover:underline cursor-pointer"
-                onClick={() => setExpandedCategory('madeForUser')}
+                onClick={() => handleOpenCategory('madeForUser')}
               >
                 {userName}
               </h2>
             </div>
             <span 
-              onClick={() => setExpandedCategory('madeForUser')}
+              onClick={() => handleOpenCategory('madeForUser')}
               className="text-xs font-bold text-slate-400 hover:text-white cursor-pointer transition-colors"
             >
               Show all
@@ -316,13 +345,13 @@ export const SpotifyBrowseView = ({ onOpenPlaylist, onOpenLikedSongs }) => {
         <section className="mb-8">
           <div className="flex items-center justify-between mb-3.5">
             <h2 
-              onClick={() => setExpandedCategory('jumpBackIn')}
+              onClick={() => handleOpenCategory('jumpBackIn')}
               className="text-lg sm:text-2xl font-bold font-display text-white tracking-tight hover:underline cursor-pointer"
             >
               Jump back in
             </h2>
             <span 
-              onClick={() => setExpandedCategory('jumpBackIn')}
+              onClick={() => handleOpenCategory('jumpBackIn')}
               className="text-xs font-bold text-slate-400 hover:text-white cursor-pointer transition-colors"
             >
               Show all
@@ -380,14 +409,14 @@ export const SpotifyBrowseView = ({ onOpenPlaylist, onOpenLikedSongs }) => {
                 Non-stop music based on your favorite songs and artists
               </span>
               <h2 
-                onClick={() => setExpandedCategory('stations')}
+                onClick={() => handleOpenCategory('stations')}
                 className="text-lg sm:text-2xl font-bold font-display text-white tracking-tight hover:underline cursor-pointer"
               >
                 Recommended Stations
               </h2>
             </div>
             <span 
-              onClick={() => setExpandedCategory('stations')}
+              onClick={() => handleOpenCategory('stations')}
               className="text-xs font-bold text-slate-400 hover:text-white cursor-pointer transition-colors"
             >
               Show all
@@ -452,14 +481,14 @@ export const SpotifyBrowseView = ({ onOpenPlaylist, onOpenLikedSongs }) => {
                 Hear a little bit of everything you love
               </span>
               <h2 
-                onClick={() => setExpandedCategory('moreOfWhatYouLike')}
+                onClick={() => handleOpenCategory('moreOfWhatYouLike')}
                 className="text-lg sm:text-2xl font-bold font-display text-white tracking-tight hover:underline cursor-pointer"
               >
                 More of what you like
               </h2>
             </div>
             <span 
-              onClick={() => setExpandedCategory('moreOfWhatYouLike')}
+              onClick={() => handleOpenCategory('moreOfWhatYouLike')}
               className="text-xs font-bold text-slate-400 hover:text-white cursor-pointer transition-colors"
             >
               Show all
@@ -509,4 +538,4 @@ export const SpotifyBrowseView = ({ onOpenPlaylist, onOpenLikedSongs }) => {
       )}
     </div>
   );
-};
+});

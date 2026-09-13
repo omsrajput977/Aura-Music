@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
 import { useAuth } from './context/AuthContext';
 import { usePlayer } from './context/PlayerContext';
 import { AmbientNebula } from './components/Visualizer/AmbientNebula';
@@ -74,19 +74,101 @@ export function MainPlayerApp() {
   const [currentSubView, setCurrentSubView] = useState('home');
   const [selectedCollection, setSelectedCollection] = useState(null);
 
+  // Scroll Preservation & Scroll-To-Top Refs
+  const mainScrollRef = useRef(null);
+  const browseViewRef = useRef(null);
+  const homeScrollPositionRef = useRef(0);
+
   const handleOpenPlaylist = (collection) => {
+    if (mainScrollRef.current) {
+      homeScrollPositionRef.current = mainScrollRef.current.scrollTop;
+    }
     setSelectedCollection(collection);
     setCurrentSubView('playlist');
+    requestAnimationFrame(() => {
+      if (mainScrollRef.current) {
+        mainScrollRef.current.scrollTop = 0;
+      }
+    });
   };
 
   const handleOpenLikedSongs = () => {
+    if (mainScrollRef.current) {
+      homeScrollPositionRef.current = mainScrollRef.current.scrollTop;
+    }
     setSelectedCollection({
       id: 'qa-liked',
       type: 'liked',
       title: 'Liked Songs'
     });
     setCurrentSubView('playlist');
+    requestAnimationFrame(() => {
+      if (mainScrollRef.current) {
+        mainScrollRef.current.scrollTop = 0;
+      }
+    });
   };
+
+  // Back to Browse: restores the exact scroll position where the user clicked into the playlist
+  const handleBackToBrowse = () => {
+    const savedPos = homeScrollPositionRef.current;
+    setCurrentSubView('home');
+    requestAnimationFrame(() => {
+      if (mainScrollRef.current) {
+        mainScrollRef.current.scrollTop = savedPos;
+      }
+      setTimeout(() => {
+        if (mainScrollRef.current) {
+          mainScrollRef.current.scrollTop = savedPos;
+        }
+      }, 30);
+    });
+  };
+
+  // Home Button Click: smooth scroll to top on front page; returns to Home & top on other views
+  const handleHomeClick = () => {
+    if (viewMode !== 'browse') {
+      toggleViewMode();
+    }
+    // If inside an expanded category grid, reset back to front page feed
+    if (browseViewRef.current?.resetToFrontPage) {
+      browseViewRef.current.resetToFrontPage();
+    }
+    homeScrollPositionRef.current = 0;
+    if (currentSubView !== 'home') {
+      setCurrentSubView('home');
+    }
+    // Smooth scroll to top of front page
+    setTimeout(() => {
+      if (mainScrollRef.current) {
+        mainScrollRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }, 10);
+  };
+
+  // Ensure scroll position is restored reliably before browser paint when returning to browse
+  useLayoutEffect(() => {
+    if (currentSubView === 'home' && homeScrollPositionRef.current > 0) {
+      const savedPos = homeScrollPositionRef.current;
+      if (mainScrollRef.current) {
+        mainScrollRef.current.scrollTop = savedPos;
+      }
+      const frameId = requestAnimationFrame(() => {
+        if (mainScrollRef.current) {
+          mainScrollRef.current.scrollTop = savedPos;
+        }
+      });
+      const timerId = setTimeout(() => {
+        if (mainScrollRef.current) {
+          mainScrollRef.current.scrollTop = savedPos;
+        }
+      }, 50);
+      return () => {
+        cancelAnimationFrame(frameId);
+        clearTimeout(timerId);
+      };
+    }
+  }, [currentSubView]);
 
   const triggerCosmicDust = () => {
     confetti({
@@ -157,18 +239,15 @@ export function MainPlayerApp() {
             </span>
           </div>
 
-          {/* Circular Home Button */}
+          {/* Circular Home Button: Smooth scroll to top on Home; returns to Home & top on other views */}
           <button
-            onClick={() => {
-              setCurrentSubView('home');
-              if (viewMode !== 'browse') toggleViewMode();
-            }}
+            onClick={handleHomeClick}
             className={`w-7 h-7 sm:w-9 sm:h-9 rounded-full border transition-all cursor-pointer flex items-center justify-center flex-shrink-0 ${
               currentSubView === 'home' && viewMode === 'browse'
                 ? 'bg-white/20 text-white border-white/30 shadow-md'
                 : 'bg-white/5 text-slate-400 hover:text-white border-white/5 hover:bg-white/10'
             }`}
-            title="Home / Browse Feed"
+            title="Home / Scroll to Top"
           >
             <Home className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           </button>
@@ -266,17 +345,22 @@ export function MainPlayerApp() {
 
       {/* Main Viewport: Swappable between Spotify Browse Feed and 3D Vinyl Turntable */}
       {viewMode === 'browse' ? (
-        <main className="flex-1 w-full overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent">
+        <main 
+          ref={mainScrollRef}
+          className="flex-1 w-full overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent"
+        >
           <div className="w-full flex justify-center gap-6 max-w-7xl mx-auto px-2 sm:px-4">
-            {currentSubView === 'home' ? (
+            <div className={currentSubView === 'home' ? 'w-full flex-1 min-w-0' : 'hidden'}>
               <SpotifyBrowseView
+                ref={browseViewRef}
                 onOpenPlaylist={handleOpenPlaylist}
                 onOpenLikedSongs={handleOpenLikedSongs}
               />
-            ) : (
+            </div>
+            {currentSubView === 'playlist' && (
               <SpotifyPlaylistView
                 collection={selectedCollection}
-                onBack={() => setCurrentSubView('home')}
+                onBack={handleBackToBrowse}
                 onAddToPlaylist={handleOpenAddToPlaylist}
               />
             )}
