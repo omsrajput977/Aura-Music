@@ -7,7 +7,6 @@ import { SpatialHUD } from './components/Controls/SpatialHUD';
 import { SpotifyBrowseView } from './components/Spotify/SpotifyBrowseView';
 import { SpotifyPlaylistView } from './components/Spotify/SpotifyPlaylistView';
 import { SpotifyNowPlayingPanel } from './components/Spotify/SpotifyNowPlayingPanel';
-import { OrbitLibrary } from './components/Navigation/OrbitLibrary';
 import { SearchModal } from './components/Navigation/SearchModal';
 import { QueueModal } from './components/Navigation/QueueModal';
 import { PlaylistsModal } from './components/Navigation/PlaylistsModal';
@@ -18,12 +17,11 @@ import { LogoutWarningModal } from './components/Navigation/LogoutWarningModal';
 import { 
   Disc3, 
   Search, 
-  Compass, 
   LogOut, 
   Radio, 
   ListMusic, 
   FolderHeart, 
-  Heart,
+  Heart, 
   LayoutGrid,
   CheckCircle2,
   Home
@@ -62,11 +60,9 @@ export function MainPlayerApp() {
     seekTo,
     changeVolume,
     toggleShuffle,
-    toggleRepeat,
-    loadLocalAudio
+    toggleRepeat
   } = usePlayer();
 
-  const [isOrbitOpen, setIsOrbitOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isQueueOpen, setIsQueueOpen] = useState(false);
   const [isPlaylistsOpen, setIsPlaylistsOpen] = useState(false);
@@ -216,16 +212,6 @@ export function MainPlayerApp() {
               )}
             </button>
 
-            {/* Constellation Library Pill */}
-            <button
-              onClick={() => setIsOrbitOpen(true)}
-              className="hidden sm:flex items-center space-x-1.5 px-2.5 py-1.5 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 text-xs text-slate-300 transition-all cursor-pointer"
-              title="Constellation Library"
-            >
-              <Compass className="w-3.5 h-3.5 text-neonAmber" />
-              <span className="hidden lg:inline">Orbit</span>
-            </button>
-
             {/* Custom Playlists Hub Pill */}
             <button
               onClick={() => setIsPlaylistsOpen(true)}
@@ -312,7 +298,6 @@ export function MainPlayerApp() {
             rpm={rpm}
             onToggleRpm={setRpm}
             onTogglePlay={togglePlay}
-            onDropFile={loadLocalAudio}
             onAddToPlaylist={handleOpenAddToPlaylist}
           />
         </main>
@@ -330,24 +315,11 @@ export function MainPlayerApp() {
         onSeek={seekTo}
         onChangeVolume={changeVolume}
         onOpenSearch={() => setIsSearchOpen(true)}
-        onToggleOrbit={() => setIsOrbitOpen(prev => !prev)}
-        showOrbit={isOrbitOpen}
         isShuffle={isShuffle}
         repeatMode={repeatMode}
         onToggleShuffle={toggleShuffle}
         onToggleRepeat={toggleRepeat}
         onOpenQueue={() => setIsQueueOpen(true)}
-      />
-
-      {/* Constellation Orbit Library Overlay */}
-      <OrbitLibrary
-        isOpen={isOrbitOpen}
-        onClose={() => setIsOrbitOpen(false)}
-        topTracks={topTracks}
-        onSelectTrack={handleTrackChangeAndCelebrate}
-        currentTrackId={currentTrack?.id}
-        onAddToPlaylist={handleOpenAddToPlaylist}
-        onOpenPlaylists={() => setIsPlaylistsOpen(true)}
       />
 
       {/* High-Speed Full-Length Search Modal */}

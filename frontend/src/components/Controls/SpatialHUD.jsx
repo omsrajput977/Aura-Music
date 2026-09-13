@@ -39,8 +39,6 @@ export const SpatialHUD = ({
   onSeek,
   onChangeVolume,
   onOpenSearch,
-  onToggleOrbit,
-  showOrbit,
   isShuffle,
   repeatMode = 'all',
   onToggleShuffle,

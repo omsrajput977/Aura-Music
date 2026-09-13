@@ -1,7 +1,7 @@
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import { VinylRecord } from './VinylRecord';
 import { ToneArm } from './ToneArm';
-import { Sparkles, Disc3, Upload, Music, Plus } from 'lucide-react';
+import { Disc3, Plus } from 'lucide-react';
 
 /**
  * Centerpiece Floating Turntable Platter Deck.
@@ -12,55 +12,12 @@ export const TurntableDeck = ({
   rpm = 33,
   onToggleRpm,
   onTogglePlay,
-  onDropFile,
   onAddToPlaylist
 }) => {
-  const fileInputRef = useRef(null);
-  const [isDragOver, setIsDragOver] = useState(false);
-
-  const handleDragOver = (e) => {
-    e.preventDefault();
-    setIsDragOver(true);
-  };
-
-  const handleDragLeave = () => {
-    setIsDragOver(false);
-  };
-
-  const handleDrop = (e) => {
-    e.preventDefault();
-    setIsDragOver(false);
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      const file = e.dataTransfer.files[0];
-      if (onDropFile) onDropFile(file);
-    }
-  };
-
-  const handleFileChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      if (onDropFile) onDropFile(e.target.files[0]);
-    }
-  };
-
   return (
-    <div 
-      onDragOver={handleDragOver}
-      onDragLeave={handleDragLeave}
-      onDrop={handleDrop}
-      className="relative w-full flex flex-col items-center justify-center p-1 sm:p-4 select-none"
-    >
-      <input
-        type="file"
-        ref={fileInputRef}
-        onChange={handleFileChange}
-        accept="audio/*"
-        className="hidden"
-      />
-
+    <div className="relative w-full flex flex-col items-center justify-center p-1 sm:p-4 select-none">
       {/* Platter Deck Chassis (Glassmorphism & Obsidian) */}
-      <div className={`relative w-full max-w-[340px] xs:max-w-[370px] sm:max-w-xl p-4 xs:p-5 sm:p-8 md:p-10 rounded-3xl sm:rounded-[2.5rem] glass-panel border transition-all duration-700 shadow-[0_30px_90px_rgba(0,0,0,0.7)] backdrop-blur-3xl ${
-        isDragOver ? 'border-neonCyan ring-4 ring-neonCyan/20 scale-[1.01]' : 'border-white/10'
-      }`}>
+      <div className="relative w-full max-w-[340px] xs:max-w-[370px] sm:max-w-xl p-4 xs:p-5 sm:p-8 md:p-10 rounded-3xl sm:rounded-[2.5rem] glass-panel border border-white/10 transition-all duration-700 shadow-[0_30px_90px_rgba(0,0,0,0.7)] backdrop-blur-3xl">
         {/* Subtle Ambient Ring Glow behind platter */}
         <div 
           className={`absolute inset-2 xs:inset-4 sm:inset-6 rounded-[2rem] filter blur-3xl opacity-30 transition-opacity duration-1000 pointer-events-none ${
@@ -71,7 +28,7 @@ export const TurntableDeck = ({
           }}
         />
 
-        {/* Deck Header Bar: Status, Brand, Load Audio & Speed Switch */}
+        {/* Deck Header Bar: Status, Brand, & Speed Switch */}
         <div className="flex items-center justify-between w-full mb-3 xs:mb-4 sm:mb-6 z-10 relative gap-2">
           <div className="flex items-center space-x-2">
             <span className={`w-2.5 h-2.5 rounded-full transition-all duration-500 ${
@@ -83,16 +40,6 @@ export const TurntableDeck = ({
           </div>
 
           <div className="flex items-center space-x-1.5 xs:space-x-2">
-            {/* Load Local MP3 Button */}
-            <button
-              onClick={() => fileInputRef.current?.click()}
-              className="flex items-center space-x-1 xs:space-x-1.5 px-2 xs:px-2.5 py-1 rounded-full bg-white/5 border border-white/10 hover:border-neonCyan/40 hover:bg-neonCyan/10 text-[10px] xs:text-[11px] font-mono text-slate-300 hover:text-neonCyan transition-all cursor-pointer"
-              title="Drop or choose any local MP3/audio file to play"
-            >
-              <Upload className="w-3 h-3" />
-              <span className="hidden xs:inline">Drop MP3</span>
-              <span className="xs:hidden">MP3</span>
-            </button>
 
             {/* RPM Selector Pill */}
             <div className="flex items-center space-x-0.5 xs:space-x-1 p-0.5 xs:p-1 rounded-full bg-black/40 border border-white/10 text-[10px] xs:text-[11px] font-mono">
