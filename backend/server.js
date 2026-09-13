@@ -6,9 +6,15 @@ const CryptoJS = require('crypto-js');
 const path = require('path');
 require('dotenv').config({ path: path.resolve(__dirname, '.env') });
 
+const connectDB = require('./config/db');
+const authRouter = require('./routes/auth');
+
 const app = express();
 const PORT = process.env.PORT || 5001;
 const FRONTEND_URI = process.env.FRONTEND_URI || 'http://localhost:5173';
+
+// Connect to Database
+connectDB();
 
 // Middleware Configuration
 app.use(cors({
@@ -18,6 +24,9 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+
+// Authentication Routes
+app.use('/api/auth', authRouter);
 
 /**
  * Health Check Endpoint

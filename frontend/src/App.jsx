@@ -10,11 +10,13 @@ import { QueueModal } from './components/Navigation/QueueModal';
 import { PlaylistsModal } from './components/Navigation/PlaylistsModal';
 import { AddToPlaylistModal } from './components/Navigation/AddToPlaylistModal';
 import { AvantGardeLogin } from './components/Auth/AvantGardeLogin';
+import { AuthModal } from './components/Auth/AuthModal';
+import { LogoutWarningModal } from './components/Navigation/LogoutWarningModal';
 import { Disc3, Search, Compass, LogOut, Radio, ListMusic, FolderHeart } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 export function MainPlayerApp() {
-  const { exitExperience } = useAuth();
+  const { exitExperience, logout, user } = useAuth();
   const {
     isPlaying,
     currentTrack,
@@ -47,6 +49,7 @@ export function MainPlayerApp() {
   const [isQueueOpen, setIsQueueOpen] = useState(false);
   const [isPlaylistsOpen, setIsPlaylistsOpen] = useState(false);
   const [isAddToPlaylistOpen, setIsAddToPlaylistOpen] = useState(false);
+  const [isLogoutWarningOpen, setIsLogoutWarningOpen] = useState(false);
   const [selectedTrackForPlaylist, setSelectedTrackForPlaylist] = useState(null);
 
   const triggerCosmicDust = () => {
@@ -72,9 +75,25 @@ export function MainPlayerApp() {
     if (!playlist || !playlist.tracks || playlist.tracks.length === 0) return;
     const cleanTracks = playlist.tracks;
     const startIdx = Math.max(0, Math.min(startIndex, cleanTracks.length - 1));
-    // Isolate active queue exclusively to this custom playlist!
     playTrackItem(cleanTracks[startIdx], null, cleanTracks, startIdx);
     triggerCosmicDust();
+  };
+
+  // Clicking the AURA Logo: Pause playback and redirect to home page
+  const handleLogoClick = () => {
+    if (isPlaying) {
+      togglePlay();
+    }
+    exitExperience();
+  };
+
+  // Confirming Logout from warning modal
+  const handleConfirmLogout = async () => {
+    if (isPlaying) {
+      togglePlay();
+    }
+    setIsLogoutWarningOpen(false);
+    await logout();
   };
 
   return (
@@ -88,17 +107,21 @@ export function MainPlayerApp() {
       {/* Floating Top Navigation Bar */}
       <header className="fixed top-2.5 xs:top-4 sm:top-5 inset-x-0 mx-auto w-[95%] sm:w-11/12 max-w-6xl z-40">
         <div className="glass-pill px-2.5 py-2 xs:px-3.5 xs:py-2.5 sm:px-5 sm:py-3 rounded-2xl flex items-center justify-between shadow-xl">
-          {/* Brand Logo */}
-          <div className="flex items-center space-x-2 xs:space-x-2.5 sm:space-x-3 cursor-pointer" onClick={() => setIsOrbitOpen(prev => !prev)}>
-            <div className="w-7 h-7 xs:w-8 xs:h-8 rounded-xl bg-gradient-to-tr from-neonCyan to-spotifyGreen flex items-center justify-center shadow-[0_0_12px_rgba(0,242,254,0.4)]">
+          {/* Brand Logo - Pauses music and redirects to home */}
+          <div 
+            className="flex items-center space-x-2 xs:space-x-2.5 sm:space-x-3 cursor-pointer group"
+            onClick={handleLogoClick}
+            title="Pause music and return to Home"
+          >
+            <div className="w-7 h-7 xs:w-8 xs:h-8 rounded-xl bg-gradient-to-tr from-neonCyan to-spotifyGreen flex items-center justify-center shadow-[0_0_12px_rgba(0,242,254,0.4)] group-hover:scale-105 transition-transform">
               <Disc3 className="w-4 h-4 xs:w-5 xs:h-5 text-slate-950 animate-spin-slow" />
             </div>
             <div>
-              <span className="text-xs xs:text-sm font-bold font-display tracking-widest text-white">
+              <span className="text-xs xs:text-sm font-bold font-display tracking-widest text-white group-hover:text-neonCyan transition-colors">
                 A U R A
               </span>
               <span className="hidden sm:inline-block ml-2 text-[10px] font-mono text-neonCyan tracking-wider uppercase">
-                SPATIAL VINYL
+                HOME
               </span>
             </div>
           </div>
@@ -153,11 +176,11 @@ export function MainPlayerApp() {
               <span>320K HI-FI</span>
             </div>
 
-            {/* Return to Portal Button */}
+            {/* Logout Warning Trigger Button */}
             <button
-              onClick={exitExperience}
+              onClick={() => setIsLogoutWarningOpen(true)}
               className="p-1.5 xs:p-2 rounded-full text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors cursor-pointer"
-              title="Return to Welcome Screen"
+              title="Log Out of AURA"
             >
               <LogOut className="w-3.5 h-3.5 xs:w-4 xs:h-4" />
             </button>
@@ -253,15 +276,42 @@ export function MainPlayerApp() {
         onClose={() => setIsAddToPlaylistOpen(false)}
         track={selectedTrackForPlaylist}
       />
+
+      {/* Logout Warning Confirmation Modal */}
+      <LogoutWarningModal
+        isOpen={isLogoutWarningOpen}
+        onClose={() => setIsLogoutWarningOpen(false)}
+        onConfirm={handleConfirmLogout}
+      />
     </div>
   );
 }
 
 export default function App() {
-  const { hasEntered, enterExperience } = useAuth();
+  const { hasEntered, enterExperience, isAuthenticated } = useAuth();
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+
+  // When clicking "Start Listening" on landing page:
+  // - If user is already authenticated (auto-login): enter immediately
+  // - If not logged in: open the AuthModal to sign in / create account
+  const handleStartListening = () => {
+    if (isAuthenticated) {
+      enterExperience();
+    } else {
+      setIsAuthModalOpen(true);
+    }
+  };
 
   if (!hasEntered) {
-    return <AvantGardeLogin onEnter={enterExperience} />;
+    return (
+      <>
+        <AvantGardeLogin onEnter={handleStartListening} />
+        <AuthModal
+          isOpen={isAuthModalOpen}
+          onClose={() => setIsAuthModalOpen(false)}
+        />
+      </>
+    );
   }
 
   return <MainPlayerApp />;
