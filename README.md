@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![AURA Banner](https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=1200&q=80)
+<img src="./assets/aura-banner.svg" alt="AURA // Spatial Vinyl Player" width="100%" />
 
 **A high-fidelity, spatial direct-drive vinyl turntable and Spotify-grade ambient music portal streaming 100% full-length 320kbps CD-quality audio with ZERO API keys or subscription fees.**
 
