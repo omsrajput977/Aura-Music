@@ -24,15 +24,16 @@ export const AuthProvider = ({ children }) => {
     }
   });
 
-  const [hasEntered, setHasEntered] = useState(() => {
-    try {
-      return localStorage.getItem(HAS_ENTERED_KEY) === 'true';
-    } catch (e) {
-      return false;
-    }
-  });
-
+  // Always redirect to the home page on refresh
+  const [hasEntered, setHasEntered] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+
+  // Clear any legacy persisted hasEntered key
+  useEffect(() => {
+    try {
+      localStorage.removeItem(HAS_ENTERED_KEY);
+    } catch (e) {}
+  }, []);
 
   // Auto-Login: Check existing JWT session cookie or token on load
   useEffect(() => {
