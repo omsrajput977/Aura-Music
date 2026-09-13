@@ -78,11 +78,11 @@ export const SearchModal = ({
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
-      className="fixed inset-0 z-50 flex items-start justify-center p-3 pt-12 xs:pt-14 sm:pt-24 bg-black/70 backdrop-blur-2xl transition-all cursor-pointer select-none"
+      className="fixed inset-0 z-50 flex items-start justify-center p-2.5 xs:p-3 sm:p-4 pt-10 xs:pt-12 sm:pt-20 bg-black/70 backdrop-blur-2xl transition-all cursor-pointer select-none"
     >
       <div 
         onClick={(e) => e.stopPropagation()} 
-        className="relative w-full max-w-2xl rounded-2xl sm:rounded-3xl glass-panel border border-white/20 p-4 xs:p-5 sm:p-6 flex flex-col shadow-[0_25px_80px_rgba(0,0,0,0.8)] cursor-default"
+        className="relative w-full max-w-2xl rounded-2xl sm:rounded-3xl glass-panel border border-white/20 p-3.5 xs:p-4 sm:p-6 flex flex-col shadow-[0_25px_80px_rgba(0,0,0,0.8)] cursor-default"
       >
         {/* Modal Header */}
         <div className="flex items-center justify-between mb-3 xs:mb-4 pb-3 border-b border-white/10">
@@ -167,10 +167,10 @@ export const SearchModal = ({
                   onSelectTrack(track, results);
                   onClose();
                 }}
-                className="glass-card p-2.5 xs:p-3 rounded-2xl flex items-center justify-between cursor-pointer group hover:border-neonCyan/40 hover:bg-neonCyan/10 transition-all"
+                className="glass-card p-2 xs:p-2.5 sm:p-3 rounded-2xl flex items-center justify-between cursor-pointer group hover:border-neonCyan/40 hover:bg-neonCyan/10 transition-all gap-2"
               >
-                <div className="flex items-center space-x-2.5 xs:space-x-3.5 min-w-0">
-                  <div className="relative w-10 h-10 xs:w-12 xs:h-12 rounded-lg xs:rounded-xl overflow-hidden bg-slate-900 flex-shrink-0 border border-white/10">
+                <div className="flex items-center space-x-2.5 xs:space-x-3 min-w-0 flex-1">
+                  <div className="relative w-10 h-10 xs:w-11 xs:h-11 sm:w-12 sm:h-12 rounded-lg xs:rounded-xl overflow-hidden bg-slate-900 flex-shrink-0 border border-white/10">
                     <img
                       src={track.albumArt || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=300&q=80'}
                       alt={track.name}
@@ -180,9 +180,9 @@ export const SearchModal = ({
                       <Play className="w-3.5 h-3.5 xs:w-4 xs:h-4 text-neonCyan fill-current" />
                     </div>
                   </div>
-                  <div className="min-w-0">
-                    <div className="flex items-center space-x-1.5 xs:space-x-2">
-                      <h4 className="text-xs xs:text-sm font-semibold text-slate-100 group-hover:text-neonCyan truncate">
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center space-x-1.5 min-w-0">
+                      <h4 className="text-xs xs:text-sm font-semibold text-slate-100 group-hover:text-neonCyan truncate block">
                         {track.name}
                       </h4>
                       {!query.trim() && (
@@ -192,13 +192,13 @@ export const SearchModal = ({
                       )}
                     </div>
                     <p className="text-[10px] xs:text-xs text-slate-400 truncate mt-0.5">
-                      {track.artists} {track.albumName ? `• ${track.albumName}` : ''}
+                      {track.artists} {track.duration ? `• ${formatDuration(track.duration)}` : ''} {track.albumName ? `• ${track.albumName}` : ''}
                     </p>
                   </div>
                 </div>
 
-                <div className="flex items-center space-x-1 xs:space-x-1.5 sm:space-x-2 flex-shrink-0 pl-1.5 xs:pl-2 sm:pl-3">
-                  <span className="text-[10px] xs:text-xs font-mono text-slate-400">
+                <div className="flex items-center space-x-1 xs:space-x-1.5 sm:space-x-2 flex-shrink-0">
+                  <span className="text-[10px] xs:text-xs font-mono text-slate-400 hidden sm:inline">
                     {formatDuration(track.duration)}
                   </span>
 
@@ -208,7 +208,7 @@ export const SearchModal = ({
                       e.stopPropagation();
                       toggleLike(track);
                     }}
-                    className={`p-1 xs:p-1.5 rounded-full transition-colors ${
+                    className={`p-1 xs:p-1.5 rounded-full transition-colors cursor-pointer ${
                       isLiked(track.id || track.name)
                         ? 'text-spotifyGreen'
                         : 'text-slate-400 hover:text-white'
@@ -224,7 +224,7 @@ export const SearchModal = ({
                       e.stopPropagation();
                       addToUserQueue(track);
                     }}
-                    className="p-1 xs:p-1.5 rounded-full bg-white/5 hover:bg-spotifyGreen/20 text-slate-400 hover:text-spotifyGreen border border-white/10 hover:border-spotifyGreen/40 transition-colors"
+                    className="p-1 xs:p-1.5 rounded-full bg-white/5 hover:bg-spotifyGreen/20 text-slate-400 hover:text-spotifyGreen border border-white/10 hover:border-spotifyGreen/40 transition-colors cursor-pointer"
                     title="Add to Next in Queue"
                   >
                     <ListPlus className="w-3.5 h-3.5" />
@@ -237,16 +237,16 @@ export const SearchModal = ({
                         e.stopPropagation();
                         onAddToPlaylist(track);
                       }}
-                      className="p-1 xs:p-1.5 rounded-full bg-white/5 hover:bg-neonCyan/20 text-slate-400 hover:text-neonCyan border border-white/10 hover:border-neonCyan/40 transition-colors"
+                      className="p-1 xs:p-1.5 rounded-full bg-white/5 hover:bg-neonCyan/20 text-slate-400 hover:text-neonCyan border border-white/10 hover:border-neonCyan/40 transition-colors cursor-pointer"
                       title="Add to Custom Playlist"
                     >
                       <Plus className="w-3 xs:w-3.5 h-3 xs:h-3.5" />
                     </button>
                   )}
 
-                  <span className="inline-flex items-center space-x-1 xs:space-x-1.5 px-2 xs:px-3 py-0.5 xs:py-1 rounded-full bg-white/5 border border-white/10 text-[10px] xs:text-[11px] font-mono text-slate-300 group-hover:bg-neonCyan/20 group-hover:text-neonCyan group-hover:border-neonCyan/40 transition-colors">
-                    <Disc className="w-3 xs:w-3.5 h-3 xs:h-3.5 animate-spin-slow" />
-                    <span className="hidden xs:inline">PLAY</span>
+                  <span className="hidden sm:inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-[11px] font-mono text-slate-300 group-hover:bg-neonCyan/20 group-hover:text-neonCyan group-hover:border-neonCyan/40 transition-colors">
+                    <Disc className="w-3.5 h-3.5 animate-spin-slow" />
+                    <span>PLAY</span>
                   </span>
                 </div>
               </div>

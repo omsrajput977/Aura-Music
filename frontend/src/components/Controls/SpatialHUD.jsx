@@ -74,12 +74,12 @@ export const SpatialHUD = ({
         />
 
         {/* Bottom Row: Left Track Info, Center Transport Controls, Right Actions & Volume */}
-        <div className="flex items-center justify-between gap-1 xs:gap-2">
+        <div className="flex items-center justify-between gap-1 xs:gap-2 sm:gap-4">
           {/* Left: Current Track Thumbnail, Title, Artist & Heart */}
-          <div className="flex items-center space-x-2 sm:space-x-3 min-w-0 max-w-[30%] sm:max-w-[28%] md:max-w-[30%]">
+          <div className="flex items-center space-x-1.5 xs:space-x-2 sm:space-x-3 min-w-0 flex-1 max-w-[38%] xs:max-w-[42%] sm:max-w-[30%]">
             {currentTrack && (
               <>
-                <div className="relative w-9 h-9 sm:w-11 sm:h-11 rounded-lg sm:rounded-xl overflow-hidden bg-slate-900 border border-white/10 flex-shrink-0 group cursor-pointer"
+                <div className="relative w-8 h-8 xs:w-9 xs:h-9 sm:w-11 sm:h-11 rounded-lg sm:rounded-xl overflow-hidden bg-slate-900 border border-white/10 flex-shrink-0 group cursor-pointer"
                   onClick={toggleRightPanel}
                   title="Toggle Now Playing Panel"
                 >
@@ -95,7 +95,7 @@ export const SpatialHUD = ({
                   )}
                 </div>
 
-                <div className="min-w-0 flex-1 hidden xs:block">
+                <div className="min-w-0 flex-1 overflow-hidden">
                   <span className="text-xs sm:text-sm font-bold text-white truncate block hover:underline cursor-pointer"
                     onClick={toggleRightPanel}
                   >
@@ -123,11 +123,11 @@ export const SpatialHUD = ({
           </div>
 
           {/* Center: Spotify-Style Playback Transport Controls */}
-          <div className="flex items-center space-x-1 xs:space-x-1.5 sm:space-x-2.5">
+          <div className="flex items-center justify-center space-x-1 xs:space-x-1.5 sm:space-x-2.5 flex-shrink-0">
             {/* Shuffle Button */}
             <button
               onClick={onToggleShuffle}
-              className={`p-1.5 sm:p-2 rounded-full border transition-all cursor-pointer ${
+              className={`p-1 xs:p-1.5 sm:p-2 rounded-full border transition-all cursor-pointer ${
                 isShuffle
                   ? 'bg-neonCyan/20 text-neonCyan border-neonCyan/40 shadow-[0_0_10px_rgba(0,242,254,0.3)]'
                   : 'text-slate-400 border-transparent hover:text-white hover:bg-white/5'
@@ -140,7 +140,7 @@ export const SpatialHUD = ({
             {/* Previous Track Button */}
             <button
               onClick={onPrevious}
-              className="p-1.5 sm:p-2 rounded-full text-slate-300 hover:text-white hover:bg-white/10 transition-all active:scale-95 cursor-pointer"
+              className="p-1 xs:p-1.5 sm:p-2 rounded-full text-slate-300 hover:text-white hover:bg-white/10 transition-all active:scale-95 cursor-pointer"
               title="Previous Track"
             >
               <SkipBack className="w-4 h-4 sm:w-5 sm:h-5 fill-current" />
@@ -149,7 +149,7 @@ export const SpatialHUD = ({
             {/* Play / Pause Master Centerpiece */}
             <button
               onClick={onTogglePlay}
-              className="relative p-2.5 xs:p-3 sm:p-3.5 rounded-full bg-gradient-to-tr from-neonCyan via-teal-400 to-spotifyGreen text-slate-950 shadow-[0_0_20px_rgba(0,242,254,0.5)] transition-transform hover:scale-105 active:scale-95 cursor-pointer"
+              className="relative p-2 xs:p-2.5 sm:p-3.5 rounded-full bg-gradient-to-tr from-neonCyan via-teal-400 to-spotifyGreen text-slate-950 shadow-[0_0_20px_rgba(0,242,254,0.5)] transition-transform hover:scale-105 active:scale-95 cursor-pointer"
               title={isPlaying ? 'Pause' : 'Play'}
             >
               {isPlaying ? (
@@ -162,16 +162,16 @@ export const SpatialHUD = ({
             {/* Next Track Button */}
             <button
               onClick={onNext}
-              className="p-1.5 sm:p-2 rounded-full text-slate-300 hover:text-white hover:bg-white/10 transition-all active:scale-95 cursor-pointer"
+              className="p-1 xs:p-1.5 sm:p-2 rounded-full text-slate-300 hover:text-white hover:bg-white/10 transition-all active:scale-95 cursor-pointer"
               title="Next Track"
             >
               <SkipForward className="w-4 h-4 sm:w-5 sm:h-5 fill-current" />
             </button>
 
-            {/* Repeat Button */}
+            {/* Repeat Button - hidden on small mobile to give room for track info and avoid button collision; accessible in QueueModal */}
             <button
               onClick={onToggleRepeat}
-              className={`p-1.5 sm:p-2 rounded-full border transition-all cursor-pointer ${
+              className={`hidden sm:flex p-1.5 sm:p-2 rounded-full border transition-all cursor-pointer ${
                 repeatMode === 'one'
                   ? 'bg-neonAmber/20 text-neonAmber border-neonAmber/40 shadow-[0_0_10px_rgba(255,183,3,0.3)]'
                   : repeatMode === 'all'
@@ -185,11 +185,11 @@ export const SpatialHUD = ({
           </div>
 
           {/* Right: View Switcher, Queue, Now Playing Drawer & Volume */}
-          <div className="flex items-center space-x-1 xs:space-x-1.5 sm:space-x-2">
+          <div className="flex items-center space-x-1 xs:space-x-1.5 sm:space-x-2 flex-shrink-0">
             {/* View Mode Toggle Button: Browse vs Turntable */}
             <button
               onClick={toggleViewMode}
-              className={`flex items-center space-x-1 px-2 py-1 sm:px-2.5 sm:py-1 rounded-full border transition-all cursor-pointer ${
+              className={`flex items-center space-x-1 px-1.5 py-1 xs:px-2 xs:py-1 sm:px-2.5 sm:py-1 rounded-full border transition-all cursor-pointer ${
                 viewMode === 'turntable'
                   ? 'bg-neonCyan/20 text-neonCyan border-neonCyan/50 shadow-[0_0_10px_rgba(0,242,254,0.3)] font-semibold'
                   : 'bg-white/5 text-slate-300 border-white/10 hover:bg-white/10 hover:text-white'
@@ -212,7 +212,7 @@ export const SpatialHUD = ({
             {/* Queue Button with Counter */}
             <button
               onClick={onOpenQueue}
-              className="flex items-center space-x-1 px-2 py-1 sm:px-2.5 sm:py-1 rounded-full bg-white/5 border border-white/10 text-slate-300 hover:text-white hover:bg-white/10 hover:border-spotifyGreen/40 transition-all cursor-pointer"
+              className="flex items-center space-x-1 px-1.5 py-1 xs:px-2 xs:py-1 sm:px-2.5 sm:py-1 rounded-full bg-white/5 border border-white/10 text-slate-300 hover:text-white hover:bg-white/10 hover:border-spotifyGreen/40 transition-all cursor-pointer"
               title="View Queue (Now Playing, Next in Queue, Upcoming)"
             >
               <ListMusic className="w-3.5 h-3.5 text-spotifyGreen" />
@@ -240,8 +240,8 @@ export const SpatialHUD = ({
               )}
             </button>
 
-            {/* Volume Control */}
-            <div className="relative flex items-center">
+            {/* Volume Control - Hidden on mobile screens since iOS/mobile devices manage volume via hardware rocker buttons */}
+            <div className="relative hidden sm:flex items-center">
               <button
                 onClick={() => {
                   if (typeof window !== 'undefined' && window.innerWidth < 640) {
