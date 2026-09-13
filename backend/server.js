@@ -4,6 +4,7 @@ const cookieParser = require('cookie-parser');
 const axios = require('axios');
 const CryptoJS = require('crypto-js');
 const path = require('path');
+const fs = require('fs');
 require('dotenv').config({ path: path.resolve(__dirname, '.env') });
 
 const connectDB = require('./config/db');
@@ -656,6 +657,18 @@ app.get('/api/music/shelves', (req, res) => {
 
   res.json(shelvesData);
 });
+
+// Serve static frontend in production if dist directory exists
+const frontendDist = path.join(__dirname, '../frontend/dist');
+if (fs.existsSync(frontendDist)) {
+  app.use(express.static(frontendDist));
+  app.get('*', (req, res, next) => {
+    if (req.path.startsWith('/api') || req.path === '/health') {
+      return next();
+    }
+    res.sendFile(path.join(frontendDist, 'index.html'));
+  });
+}
 
 // Start the Express Server
 app.listen(PORT, () => {

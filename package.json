@@ -1,0 +1,20 @@
+{
+  "name": "aura-music",
+  "version": "1.0.0",
+  "description": "AURA // Spatial Vinyl & Ambient Music Experience",
+  "main": "backend/server.js",
+  "scripts": {
+    "install:all": "npm install --prefix backend && npm install --prefix frontend",
+    "build": "npm install --prefix backend && npm install --prefix frontend && npm run build --prefix frontend",
+    "start": "node backend/server.js"
+  },
+  "keywords": [
+    "music",
+    "vinyl",
+    "turntable",
+    "streaming",
+    "hifi"
+  ],
+  "author": "Om Rajput",
+  "license": "MIT"
+}

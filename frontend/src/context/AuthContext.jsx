@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const AuthContext = createContext(null);
 
-const BACKEND_URL = 'http://localhost:5001';
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const HAS_ENTERED_KEY = 'aura_has_entered';
 const LOCAL_USER_KEY = 'aura_user';
 
