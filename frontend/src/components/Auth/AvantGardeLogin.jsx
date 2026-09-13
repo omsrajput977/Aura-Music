@@ -69,7 +69,7 @@ export const AvantGardeLogin = ({ onEnter }) => {
         </div>
 
         {/* Single Primary Action Button: Start Listening */}
-        <div className="mt-4 xs:mt-5 sm:mt-8 flex items-center justify-center w-full max-w-[260px] xs:max-w-xs sm:max-w-sm px-2">
+        <div className="mt-4 xs:mt-5 sm:mt-8 flex flex-col items-center justify-center w-full max-w-[280px] xs:max-w-xs sm:max-w-sm px-2">
           <button
             onClick={onEnter}
             className="w-full py-2.5 xs:py-3.5 sm:py-4 px-5 xs:px-7 sm:px-8 rounded-2xl bg-gradient-to-r from-neonCyan via-teal-400 to-spotifyGreen text-slate-950 font-bold text-xs xs:text-sm sm:text-base tracking-wide shadow-[0_0_25px_rgba(0,242,254,0.35)] hover:shadow-[0_0_45px_rgba(0,242,254,0.6)] active:scale-95 transition-all flex items-center justify-center space-x-2 xs:space-x-2.5 cursor-pointer group"
@@ -78,6 +78,17 @@ export const AvantGardeLogin = ({ onEnter }) => {
             <span>Start Listening</span>
             <ArrowRight className="w-3.5 xs:w-4 h-3.5 xs:h-4 ml-0.5 group-hover:translate-x-1 transition-transform" />
           </button>
+
+          {/* Creator Signature Highlight */}
+          <div className="mt-3 xs:mt-3.5 sm:mt-4 inline-flex items-center space-x-1.5 xs:space-x-2 px-3 xs:px-3.5 sm:px-4 py-1.5 rounded-full bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 hover:border-neonCyan/30 shadow-[0_0_20px_rgba(0,242,254,0.12)] backdrop-blur-xl transition-all duration-300">
+            <Sparkles className="w-3 xs:w-3.5 h-3 xs:h-3.5 text-neonCyan animate-pulse flex-shrink-0" />
+            <span className="text-[10px] xs:text-[11px] sm:text-xs font-mono tracking-wider text-slate-400 uppercase">
+              Designed & Built by
+            </span>
+            <span className="text-xs xs:text-sm sm:text-sm font-black font-display tracking-widest bg-gradient-to-r from-neonCyan via-teal-300 to-spotifyGreen bg-clip-text text-transparent drop-shadow-[0_0_12px_rgba(0,242,254,0.45)]">
+              OM RAJPUT
+            </span>
+          </div>
         </div>
       </main>
 
