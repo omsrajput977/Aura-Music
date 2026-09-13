@@ -202,6 +202,7 @@ export const PlayerProvider = ({ children }) => {
   const currentTrackRef = useRef(currentTrack);
   const isPlayingRef = useRef(isPlaying);
   const handleNextRef = useRef(null);
+  const handlePreviousRef = useRef(null);
   const lastSavedTimeRef = useRef(0);
 
   useEffect(() => { activeQueueRef.current = activeQueue; }, [activeQueue]);
@@ -527,6 +528,7 @@ export const PlayerProvider = ({ children }) => {
       playTrackItem(prevTrack, null, queue, prevIdx, 0);
     }
   };
+  handlePreviousRef.current = handlePrevious;
 
   // Direct queue jump
   const jumpToQueueIndex = (index) => {
@@ -665,19 +667,133 @@ export const PlayerProvider = ({ children }) => {
       }
     };
 
+    const handleAudioPlay = () => {
+      setIsPlaying(true);
+      isPlayingRef.current = true;
+      if ('mediaSession' in navigator) {
+        navigator.mediaSession.playbackState = 'playing';
+      }
+    };
+
+    const handleAudioPause = () => {
+      setIsPlaying(false);
+      isPlayingRef.current = false;
+      if ('mediaSession' in navigator) {
+        navigator.mediaSession.playbackState = 'paused';
+      }
+      try {
+        if (audio.currentTime) {
+          localStorage.setItem(STORAGE_KEYS.PROGRESS_MS, Math.floor(audio.currentTime * 1000).toString());
+        }
+      } catch (e) {}
+    };
+
     audio.addEventListener('timeupdate', handleTimeUpdate);
     audio.addEventListener('ended', handleEnded);
+    audio.addEventListener('play', handleAudioPlay);
+    audio.addEventListener('pause', handleAudioPause);
 
     return () => {
       audio.removeEventListener('timeupdate', handleTimeUpdate);
       audio.removeEventListener('ended', handleEnded);
+      audio.removeEventListener('play', handleAudioPlay);
+      audio.removeEventListener('pause', handleAudioPause);
     };
   }, []);
+
+  // MediaSession API Integration for Bluetooth Devices, OS Lockscreen & Hardware Media Keys
+  useEffect(() => {
+    if (!('mediaSession' in navigator)) return;
+
+    if (currentTrack) {
+      const artwork = [];
+      if (currentTrack.albumArt) {
+        artwork.push(
+          { src: currentTrack.albumArt, sizes: '96x96', type: 'image/jpeg' },
+          { src: currentTrack.albumArt, sizes: '128x128', type: 'image/jpeg' },
+          { src: currentTrack.albumArt, sizes: '192x192', type: 'image/jpeg' },
+          { src: currentTrack.albumArt, sizes: '256x256', type: 'image/jpeg' },
+          { src: currentTrack.albumArt, sizes: '384x384', type: 'image/jpeg' },
+          { src: currentTrack.albumArt, sizes: '512x512', type: 'image/jpeg' }
+        );
+      }
+
+      navigator.mediaSession.metadata = new window.MediaMetadata({
+        title: currentTrack.name || 'AURA Track',
+        artist: currentTrack.artists || 'AURA Music',
+        album: currentTrack.albumName || contextName || 'AURA',
+        artwork
+      });
+    }
+
+    navigator.mediaSession.playbackState = isPlaying ? 'playing' : 'paused';
+  }, [currentTrack, contextName, isPlaying]);
+
+  useEffect(() => {
+    if (!('mediaSession' in navigator)) return;
+
+    const actionHandlers = [
+      ['play', async () => {
+        const audio = demoAudioRef.current;
+        try {
+          await audio.play();
+        } catch (e) {
+          console.warn('MediaSession play notice:', e.message);
+        }
+        setIsPlaying(true);
+      }],
+      ['pause', () => {
+        const audio = demoAudioRef.current;
+        audio.pause();
+        setIsPlaying(false);
+      }],
+      ['previoustrack', () => {
+        if (handlePreviousRef.current) handlePreviousRef.current();
+      }],
+      ['nexttrack', () => {
+        if (handleNextRef.current) handleNextRef.current();
+      }],
+      ['seekto', (details) => {
+        if (details.seekTime !== undefined && details.seekTime !== null) {
+          seekTo(details.seekTime * 1000);
+        }
+      }]
+    ];
+
+    for (const [action, handler] of actionHandlers) {
+      try {
+        navigator.mediaSession.setActionHandler(action, handler);
+      } catch (e) {}
+    }
+
+    return () => {
+      for (const [action] of actionHandlers) {
+        try {
+          navigator.mediaSession.setActionHandler(action, null);
+        } catch (e) {}
+      }
+    };
+  }, []);
+
+  // Update MediaSession position state for seekbars on lockscreen / bluetooth
+  useEffect(() => {
+    if (!('mediaSession' in navigator) || !('setPositionState' in navigator.mediaSession)) return;
+    try {
+      const audio = demoAudioRef.current;
+      if (audio.duration && !isNaN(audio.duration) && audio.duration > 0) {
+        navigator.mediaSession.setPositionState({
+          duration: audio.duration,
+          playbackRate: audio.playbackRate || 1,
+          position: Math.min(audio.currentTime, audio.duration)
+        });
+      }
+    } catch (e) {}
+  }, [progressMs, durationMs]);
 
   // Handle Play/Pause
   const togglePlay = async () => {
     const audio = demoAudioRef.current;
-    if (isPlaying) {
+    if (isPlaying || !audio.paused) {
       audio.pause();
       setIsPlaying(false);
       try {
