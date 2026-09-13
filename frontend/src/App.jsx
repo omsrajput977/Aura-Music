@@ -5,6 +5,7 @@ import { AmbientNebula } from './components/Visualizer/AmbientNebula';
 import { TurntableDeck } from './components/Turntable/TurntableDeck';
 import { SpatialHUD } from './components/Controls/SpatialHUD';
 import { SpotifyBrowseView } from './components/Spotify/SpotifyBrowseView';
+import { SpotifyPlaylistView } from './components/Spotify/SpotifyPlaylistView';
 import { SpotifyNowPlayingPanel } from './components/Spotify/SpotifyNowPlayingPanel';
 import { OrbitLibrary } from './components/Navigation/OrbitLibrary';
 import { SearchModal } from './components/Navigation/SearchModal';
@@ -24,7 +25,8 @@ import {
   FolderHeart, 
   Heart,
   LayoutGrid,
-  CheckCircle2
+  CheckCircle2,
+  Home
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
@@ -72,6 +74,24 @@ export function MainPlayerApp() {
   const [isLogoutWarningOpen, setIsLogoutWarningOpen] = useState(false);
   const [selectedTrackForPlaylist, setSelectedTrackForPlaylist] = useState(null);
 
+  // Dynamic Spotify Sub-view: 'home' | 'playlist'
+  const [currentSubView, setCurrentSubView] = useState('home');
+  const [selectedCollection, setSelectedCollection] = useState(null);
+
+  const handleOpenPlaylist = (collection) => {
+    setSelectedCollection(collection);
+    setCurrentSubView('playlist');
+  };
+
+  const handleOpenLikedSongs = () => {
+    setSelectedCollection({
+      id: 'qa-liked',
+      type: 'liked',
+      title: 'Liked Songs'
+    });
+    setCurrentSubView('playlist');
+  };
+
   const triggerCosmicDust = () => {
     confetti({
       particleCount: 25,
@@ -117,7 +137,7 @@ export function MainPlayerApp() {
   };
 
   return (
-    <div className="relative min-h-screen w-full flex flex-col justify-between overflow-hidden">
+    <div className="relative h-[100dvh] w-full flex flex-col justify-between overflow-hidden">
       {/* Dynamic Ambient Background Canvas */}
       <AmbientNebula
         albumArt={currentTrack?.albumArt}
@@ -142,6 +162,22 @@ export function MainPlayerApp() {
               </span>
             </div>
           </div>
+
+          {/* Circular Home Button (like Spotify) */}
+          <button
+            onClick={() => {
+              setCurrentSubView('home');
+              if (viewMode !== 'browse') toggleViewMode();
+            }}
+            className={`p-2 sm:p-2.5 rounded-full border transition-all cursor-pointer flex-shrink-0 ${
+              currentSubView === 'home' && viewMode === 'browse'
+                ? 'bg-white/20 text-white border-white/30 shadow-md'
+                : 'bg-white/5 text-slate-400 hover:text-white border-white/5 hover:bg-white/10'
+            }`}
+            title="Home / Browse Feed"
+          >
+            <Home className="w-4 h-4" />
+          </button>
 
           {/* Spotify-Style Central Search Input: "What do you want to play?" */}
           <div
@@ -245,12 +281,20 @@ export function MainPlayerApp() {
 
       {/* Main Viewport: Swappable between Spotify Browse Feed and 3D Vinyl Turntable */}
       {viewMode === 'browse' ? (
-        <main className="flex-1 w-full flex justify-center items-start overflow-y-auto pt-2">
-          <div className="w-full flex justify-center gap-6 max-w-7xl">
-            <SpotifyBrowseView
-              onOpenAddToPlaylist={handleOpenAddToPlaylist}
-              onOpenLikedSongs={() => {}}
-            />
+        <main className="flex-1 w-full overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent">
+          <div className="w-full flex justify-center gap-6 max-w-7xl mx-auto px-2 sm:px-4">
+            {currentSubView === 'home' ? (
+              <SpotifyBrowseView
+                onOpenPlaylist={handleOpenPlaylist}
+                onOpenLikedSongs={handleOpenLikedSongs}
+              />
+            ) : (
+              <SpotifyPlaylistView
+                collection={selectedCollection}
+                onBack={() => setCurrentSubView('home')}
+                onAddToPlaylist={handleOpenAddToPlaylist}
+              />
+            )}
             {isRightPanelOpen && (
               <SpotifyNowPlayingPanel
                 onClose={toggleRightPanel}
@@ -261,7 +305,7 @@ export function MainPlayerApp() {
           </div>
         </main>
       ) : (
-        <main className="flex-1 flex flex-col items-center justify-center pt-16 sm:pt-20 pb-28 sm:pb-32 px-2 sm:px-4 w-full">
+        <main className="flex-1 w-full overflow-y-auto overflow-x-hidden flex flex-col items-center justify-center pt-16 sm:pt-20 pb-28 sm:pb-32 px-2 sm:px-4">
           <TurntableDeck
             isPlaying={isPlaying}
             currentTrack={currentTrack}

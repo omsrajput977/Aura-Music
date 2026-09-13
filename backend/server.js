@@ -239,50 +239,172 @@ app.get('/api/music/shelves', (req, res) => {
         id: 'qa-liked',
         type: 'liked',
         title: 'Liked Songs',
+        description: 'Your favorite tracks in one personal collection',
         isLikedTile: true,
         gradient: 'from-indigo-600 to-purple-800'
       },
       {
         id: 'qa-garba',
         title: 'GARBA NONSTOP',
+        description: 'High tempo festive garba beats & non-stop energy',
         cover: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=300&q=80',
-        tracks: [TAUBA_TAUBA, LOVER, CHALEYA]
+        tracks: [TAUBA_TAUBA, LOVER, CHALEYA, KESARIYA]
       },
       {
         id: 'qa-emraan',
         title: 'Emraan Hashmi Hits',
+        description: 'Golden era Bollywood romance and nostalgia',
         cover: 'https://c.saavncdn.com/221/Soulful-Hits-Hindi-2026-20260529163806-500x500.jpg',
         tracks: [APNA_BANA_LE, KESARIYA, CHALEYA]
       },
       {
         id: 'qa-bollywood',
         title: 'Bollywood Hits 2026',
+        description: 'Top trending theatrical releases and chartbusters',
         cover: 'https://c.saavncdn.com/871/Brahmastra-Original-Motion-Picture-Soundtrack-Hindi-2022-20221006155213-500x500.jpg',
-        tracks: [KESARIYA, CHALEYA, APNA_BANA_LE]
+        tracks: [KESARIYA, CHALEYA, APNA_BANA_LE, TAUBA_TAUBA]
       },
       {
         id: 'qa-punjabi',
         title: 'Punjabi Heat 🔥',
+        description: 'Heavy basslines, desi swagger and dancefloor bangers',
         cover: 'https://c.saavncdn.com/992/Bad-Newz-Hindi-2024-20250730113701-500x500.jpg',
         tracks: [TAUBA_TAUBA, LOVER]
       },
       {
         id: 'qa-hiphop',
         title: 'Mockingbird & Rap',
+        description: 'Lyrical masterpieces and international rap anthems',
         cover: 'https://c.saavncdn.com/700/Encore-Premiere-Explicit-2004-500x500.jpg',
         tracks: [MOCKINGBIRD]
       },
       {
         id: 'qa-highway',
         title: 'Highway Road Trip',
+        description: 'Open windows, sunset skies and long drive tunes',
         cover: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=300&q=80',
         tracks: [LOVER, KESARIYA, TAUBA_TAUBA]
       },
       {
         id: 'qa-lofi',
         title: 'Midnight Lo-Fi & Chill',
+        description: 'Relaxing ambient frequencies and warm analog vinyl',
         cover: 'https://images.unsplash.com/photo-1518609878373-06d740f60d8b?auto=format&fit=crop&w=300&q=80',
         tracks: [APNA_BANA_LE, MOCKINGBIRD]
+      }
+    ],
+    madeForUser: [
+      {
+        id: 'dm-1',
+        title: 'Daily Mix 01',
+        subtitle: 'Roop Kumar Rathod, Pritam, Chaar Diwaari',
+        cover: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=400&q=80',
+        badgeColor: 'border-teal-500',
+        mixNumber: '01',
+        tracks: [KESARIYA, APNA_BANA_LE, CHALEYA]
+      },
+      {
+        id: 'dm-2',
+        title: 'Daily Mix 02',
+        subtitle: 'Codec, Bmomusik, beatzbyfrank and more',
+        cover: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=400&q=80',
+        badgeColor: 'border-amber-400',
+        mixNumber: '02',
+        tracks: [MOCKINGBIRD, TAUBA_TAUBA]
+      },
+      {
+        id: 'dm-3',
+        title: 'Daily Mix 03',
+        subtitle: 'Deva, Sachet Tandon, Hansraj Raghuwanshi',
+        cover: 'https://images.unsplash.com/photo-1506157786151-b8491531f063?auto=format&fit=crop&w=400&q=80',
+        badgeColor: 'border-rose-500',
+        mixNumber: '03',
+        tracks: [APNA_BANA_LE, KESARIYA, CHALEYA]
+      },
+      {
+        id: 'dm-4',
+        title: 'Daily Mix 04',
+        subtitle: 'Falguni Pathak, Geeta Rabari, Rajesh Ahir',
+        cover: 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=400&q=80',
+        badgeColor: 'border-pink-400',
+        mixNumber: '04',
+        tracks: [TAUBA_TAUBA, LOVER, CHALEYA]
+      },
+      {
+        id: 'dm-5',
+        title: 'Daily Mix 05',
+        subtitle: 'Udit Narayan, Kishore Kumar, Suresh Wadkar',
+        cover: 'https://c.saavncdn.com/221/Soulful-Hits-Hindi-2026-20260529163806-500x500.jpg',
+        badgeColor: 'border-emerald-400',
+        mixNumber: '05',
+        tracks: [KESARIYA, APNA_BANA_LE]
+      },
+      {
+        id: 'dm-6',
+        title: 'Daily Mix 06',
+        subtitle: 'The Loveliest, Eminem, Lil Wayne and more',
+        cover: 'https://c.saavncdn.com/700/Encore-Premiere-Explicit-2004-500x500.jpg',
+        badgeColor: 'border-blue-400',
+        mixNumber: '06',
+        tracks: [MOCKINGBIRD, TAUBA_TAUBA]
+      },
+      {
+        id: 'dm-dw',
+        title: 'Discover Weekly',
+        subtitle: 'Your weekly mixtape of fresh music. Updated every Monday.',
+        cover: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=400&q=80',
+        badgeColor: 'border-purple-400',
+        tracks: [CHALEYA, LOVER, KESARIYA, TAUBA_TAUBA, APNA_BANA_LE]
+      }
+    ],
+    episodesYouMightLike: [
+      {
+        id: 'pod-1',
+        title: 'How To Attract Money, Love & Career?',
+        subtitle: 'Mitesh Khatri & Indu Khatri • Apr 2024 • 79 min',
+        cover: 'https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=400&q=80',
+        category: 'Self Development',
+        tracks: [APNA_BANA_LE]
+      },
+      {
+        id: 'pod-2',
+        title: 'HANUMAN CHALISA',
+        subtitle: 'Shailendra Pandey • Sept 2021 • 7 min',
+        cover: 'https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&w=400&q=80',
+        category: 'Spiritual',
+        tracks: [KESARIYA]
+      },
+      {
+        id: 'pod-3',
+        title: 'When life gets hard.',
+        subtitle: 'Inspiring Mindset • 8 Sept • 6 min',
+        cover: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
+        category: 'Motivation',
+        tracks: [MOCKINGBIRD]
+      },
+      {
+        id: 'pod-4',
+        title: 'STAY FOCUSED',
+        subtitle: 'Deep Work & Mental Clarity • 6 Sept • 25 min',
+        cover: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80',
+        category: 'Productivity',
+        tracks: [APNA_BANA_LE]
+      },
+      {
+        id: 'pod-5',
+        title: 'The Subtle Art Of Not Giving a F*ck',
+        subtitle: 'Mark Manson Official • May 2025 • 8 min',
+        cover: 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=400&q=80',
+        category: 'Philosophy',
+        tracks: [MOCKINGBIRD]
+      },
+      {
+        id: 'pod-6',
+        title: 'Bhagwat Gita | Mahabharat',
+        subtitle: 'Timeless Wisdom & Philosophy • Jul 2023 • 2 min',
+        cover: 'https://images.unsplash.com/photo-1499209974431-9dddcece7f88?auto=format&fit=crop&w=400&q=80',
+        category: 'Spirituality',
+        tracks: [KESARIYA]
       }
     ],
     jumpBackIn: [
