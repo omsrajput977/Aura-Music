@@ -141,63 +141,62 @@ export function MainPlayerApp() {
       />
 
       {/* Floating Top Navigation Bar */}
-      <header className="fixed top-2.5 xs:top-3 sm:top-4 inset-x-0 mx-auto w-[96%] sm:w-11/12 max-w-7xl z-40">
-        <div className="glass-pill px-3 py-2 sm:px-5 sm:py-2.5 rounded-2xl flex items-center justify-between shadow-xl gap-2">
+      <header className="fixed top-2 xs:top-2.5 sm:top-4 inset-x-0 mx-auto w-[96%] sm:w-11/12 max-w-7xl z-40">
+        <div className="glass-pill px-2.5 py-1.5 xs:px-3 xs:py-2 sm:px-5 sm:py-2.5 rounded-full flex items-center justify-between shadow-2xl gap-1.5 sm:gap-2.5 border border-white/10 bg-slate-950/80 backdrop-blur-2xl">
           {/* Brand Logo - Pauses music and redirects to home */}
           <div 
-            className="flex items-center space-x-2 sm:space-x-3 cursor-pointer group flex-shrink-0"
+            className="flex items-center space-x-1.5 sm:space-x-2.5 cursor-pointer group flex-shrink-0"
             onClick={handleLogoClick}
             title="Pause music and return to Home"
           >
-            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-gradient-to-tr from-neonCyan to-spotifyGreen flex items-center justify-center shadow-[0_0_12px_rgba(0,242,254,0.4)] group-hover:scale-105 transition-transform">
+            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-tr from-neonCyan to-spotifyGreen flex items-center justify-center shadow-[0_0_12px_rgba(0,242,254,0.4)] group-hover:scale-105 transition-transform flex-shrink-0">
               <Disc3 className="w-4 h-4 sm:w-5 sm:h-5 text-slate-950 animate-spin-slow" />
             </div>
-            <div>
-              <span className="text-xs sm:text-sm font-bold font-display tracking-widest text-white group-hover:text-neonCyan transition-colors">
-                A U R A
-              </span>
-            </div>
+            <span className="text-xs sm:text-sm font-bold font-display tracking-wider sm:tracking-widest text-white group-hover:text-neonCyan transition-colors">
+              AURA
+            </span>
           </div>
 
-          {/* Circular Home Button (like Spotify) */}
+          {/* Circular Home Button */}
           <button
             onClick={() => {
               setCurrentSubView('home');
               if (viewMode !== 'browse') toggleViewMode();
             }}
-            className={`p-2 sm:p-2.5 rounded-full border transition-all cursor-pointer flex-shrink-0 ${
+            className={`w-7 h-7 sm:w-9 sm:h-9 rounded-full border transition-all cursor-pointer flex items-center justify-center flex-shrink-0 ${
               currentSubView === 'home' && viewMode === 'browse'
                 ? 'bg-white/20 text-white border-white/30 shadow-md'
                 : 'bg-white/5 text-slate-400 hover:text-white border-white/5 hover:bg-white/10'
             }`}
             title="Home / Browse Feed"
           >
-            <Home className="w-4 h-4" />
+            <Home className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           </button>
 
-          {/* Spotify-Style Central Search Input: "What do you want to play?" */}
+          {/* Responsive Spotify-Style Central Search Input */}
           <div
             onClick={() => setIsSearchOpen(true)}
-            className="flex-1 max-w-xs sm:max-w-md mx-1.5 sm:mx-3 flex items-center space-x-2.5 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full bg-white/10 hover:bg-white/15 border border-white/10 hover:border-white/20 text-slate-300 hover:text-white transition-all cursor-pointer shadow-inner group"
+            className="flex-1 min-w-[70px] max-w-xs sm:max-w-md mx-1 sm:mx-3 flex items-center space-x-1.5 sm:space-x-2.5 px-2.5 py-1.5 sm:px-4 sm:py-2 rounded-full bg-white/10 hover:bg-white/15 border border-white/10 hover:border-white/20 text-slate-300 hover:text-white transition-all cursor-pointer shadow-inner group"
             title="Click to search songs, artists, and albums"
           >
             <Search className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-400 group-hover:text-neonCyan transition-colors flex-shrink-0" />
-            <span className="text-xs text-slate-400 group-hover:text-slate-200 truncate">
-              What do you want to play?
+            <span className="text-xs text-slate-400 group-hover:text-slate-200 truncate select-none">
+              <span className="hidden sm:inline">What do you want to play?</span>
+              <span className="sm:hidden">Search</span>
             </span>
           </div>
 
-          {/* Right Action Pills */}
+          {/* Right Action Buttons */}
           <div className="flex items-center space-x-1 sm:space-x-2 flex-shrink-0">
-            {/* View Mode Toggle Pill (Browse vs Turntable) */}
+            {/* View Mode Toggle Button (Browse vs Turntable) */}
             <button
               onClick={toggleViewMode}
-              className={`flex items-center space-x-1.5 px-2.5 py-1.5 rounded-full border transition-all cursor-pointer ${
+              className={`w-7 h-7 sm:w-auto sm:px-3 sm:py-1.5 rounded-full border transition-all cursor-pointer flex items-center justify-center space-x-1.5 flex-shrink-0 ${
                 viewMode === 'browse'
                   ? 'bg-spotifyGreen/20 text-spotifyGreen border-spotifyGreen/40 shadow-[0_0_10px_rgba(30,215,96,0.3)] font-semibold'
                   : 'bg-white/5 text-slate-300 border-white/10 hover:bg-white/10 hover:text-white'
               }`}
-              title={viewMode === 'browse' ? 'Currently in Spotify Browse Feed' : 'Switch to Spotify Browse Feed'}
+              title={viewMode === 'browse' ? 'Currently in Browse Feed' : 'Switch to Browse Feed'}
             >
               {viewMode === 'browse' ? (
                 <>
@@ -212,20 +211,20 @@ export function MainPlayerApp() {
               )}
             </button>
 
-            {/* Custom Playlists Hub Pill */}
+            {/* Custom Playlists Hub Button */}
             <button
               onClick={() => setIsPlaylistsOpen(true)}
-              className="flex items-center space-x-1.5 px-2.5 py-1.5 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 hover:border-neonCyan/40 text-xs text-slate-300 hover:text-neonCyan transition-all cursor-pointer"
+              className="w-7 h-7 sm:w-auto sm:px-3 sm:py-1.5 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 hover:border-neonCyan/40 text-xs text-slate-300 hover:text-neonCyan transition-all cursor-pointer flex items-center justify-center space-x-1.5 flex-shrink-0"
               title="Custom Playlists"
             >
               <FolderHeart className="w-3.5 h-3.5 text-neonCyan" />
               <span className="hidden md:inline">Playlists</span>
             </button>
 
-            {/* Queue Pill */}
+            {/* Queue Pill (Tablet & Desktop only, on mobile it's in bottom HUD) */}
             <button
               onClick={() => setIsQueueOpen(true)}
-              className="flex items-center space-x-1.5 px-2.5 py-1.5 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 hover:border-spotifyGreen/40 text-xs text-slate-300 transition-all cursor-pointer"
+              className="hidden sm:flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 hover:border-spotifyGreen/40 text-xs text-slate-300 transition-all cursor-pointer flex-shrink-0"
               title="Queue"
             >
               <ListMusic className="w-3.5 h-3.5 text-spotifyGreen" />
@@ -246,7 +245,7 @@ export function MainPlayerApp() {
             {/* Logout Warning Trigger Button */}
             <button
               onClick={() => setIsLogoutWarningOpen(true)}
-              className="p-1.5 sm:p-2 rounded-full text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors cursor-pointer"
+              className="w-7 h-7 sm:w-8 sm:h-8 rounded-full text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 flex items-center justify-center transition-colors cursor-pointer flex-shrink-0"
               title="Log Out of AURA"
             >
               <LogOut className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
